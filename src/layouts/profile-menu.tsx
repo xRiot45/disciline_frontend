@@ -11,6 +11,7 @@ import { decodeToken } from '@/utils/auth';
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Title, Text, Button, Popover } from 'rizzui';
+import Link from 'next/link';
 
 export default function ProfileMenu({
   buttonClassName,
@@ -126,6 +127,14 @@ function DropdownMenu() {
         </div>
       </div>
       <div className="border-t border-gray-300 px-6 pb-6 pt-5">
+        <Link href="/admin/profile/update-password">
+          <Button
+            className="mb-4 h-auto w-full justify-start p-0 font-medium  outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
+            variant="text"
+          >
+            Update Password
+          </Button>
+        </Link>
         <Button
           className="h-auto w-full justify-start p-0 font-medium text-red-600 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
           variant="text"
