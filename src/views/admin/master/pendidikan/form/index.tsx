@@ -1,12 +1,14 @@
-import { Input } from 'rizzui'
+import { Input } from 'rizzui';
+import { DATA_PENDIDIKAN_FORM } from '@/types/master/pendidikan/type';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 interface Proptypes {
-  register: any
-  errors: any
+  register: UseFormRegister<DATA_PENDIDIKAN_FORM>;
+  errors: FieldErrors<DATA_PENDIDIKAN_FORM>;
 }
 
 export default function FormLayout(props: Proptypes) {
-  const { register, errors } = props
+  const { register, errors } = props;
   return (
     <>
       <Input
@@ -20,5 +22,5 @@ export default function FormLayout(props: Proptypes) {
         error={errors.nama_pendidikan?.message}
       />
     </>
-  )
+  );
 }

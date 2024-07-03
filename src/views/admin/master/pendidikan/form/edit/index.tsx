@@ -9,12 +9,12 @@ import { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import { Button } from 'rizzui';
 import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { usePathname, useRouter } from 'next/navigation';
 import { validationSchema, ValidationSchema } from '../validationSchema';
-import { useCookies } from 'react-cookie';
 
 const pageHeader = {
-  title: 'Pendidikan',
+  title: 'Edit Pendidikan',
   breadcrumb: [
     {
       href: '/admin/dashboard',
@@ -30,15 +30,17 @@ const pageHeader = {
   ],
 };
 
-export default function EditpendidikanView() {
+export default function EditPendidikanView() {
   const router = useRouter();
   const pathname = usePathname();
   const id = pathname.split('/').pop();
-  const [cookies] = useCookies(['accessToken']);
-  const [namapendidikan, setNamapendidikan] = useState<string | any>('');
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [dataPendidikan, setDataPendidikan] = useState({
+    nama_pendidikan: '' as string,
+  });
 
   useEffect(() => {
-    const fetchDataById = async () => {
+    const fetchDataPendidikanById = async () => {
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -49,16 +51,19 @@ export default function EditpendidikanView() {
           `${process.env.API_URL}/api/master/pendidikan/${id}`,
           { headers }
         );
-        setNamapendidikan(res?.data?.data);
+
+        setDataPendidikan(res?.data?.data);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchDataById();
+    fetchDataPendidikanById();
   }, [cookies.accessToken, id]);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleEditPendidikan = async (
+    values: z.infer<typeof validationSchema>
+  ) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -91,12 +96,12 @@ export default function EditpendidikanView() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
-        onSubmit={handleSubmit}
+        onSubmit={handleEditPendidikan}
         resetValues={false}
         validationSchema={validationSchema}
         useFormProps={{
           values: {
-            nama_pendidikan: namapendidikan?.nama_pendidikan,
+            nama_pendidikan: dataPendidikan?.nama_pendidikan,
           },
           mode: 'onChange',
         }}

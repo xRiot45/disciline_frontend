@@ -13,7 +13,7 @@ import { useCookies } from 'react-cookie';
 import { validationSchema, ValidationSchema } from '../validationSchema';
 
 const pageHeader = {
-  title: 'Pendidikan',
+  title: 'Tambah Pendidikan',
   breadcrumb: [
     {
       href: '/admin/dashboard',
@@ -31,9 +31,11 @@ const pageHeader = {
 
 export default function TambahPendidikanView() {
   const router = useRouter();
-  const [cookies] = useCookies(['accessToken']);
+  const [cookies] = useCookies<string>(['accessToken']);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleAddPendidikan = async (
+    values: z.infer<typeof validationSchema>
+  ) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -53,8 +55,10 @@ export default function TambahPendidikanView() {
       }
     } catch (error: any) {
       if (error.response.status === 409) {
+        console.log('error', error.response.data);
         toast.error('Pendidikan sudah ada');
       } else {
+        console.log('error', error.response.data);
         toast.error(
           'Terjadi kesalahan saat menambahkan data, silahkan coba lagi!'
         );
@@ -67,7 +71,7 @@ export default function TambahPendidikanView() {
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={handleAddPendidikan}
       >
         {({ register, formState: { errors } }) => (
           <div className="space-y-3">

@@ -1,91 +1,90 @@
-'use client'
+'use client';
 
-import axios from 'axios'
-import Table from './table'
-import toast from 'react-hot-toast'
-import { Title } from 'rizzui'
-import { useRouter } from 'next/navigation'
-import { useCookies } from 'react-cookie'
-import { useEffect, useState } from 'react'
+import axios from 'axios';
+import Table from './table';
+import toast from 'react-hot-toast';
+import { Title } from 'rizzui';
+import { useRouter } from 'next/navigation';
+import { useCookies } from 'react-cookie';
+import { DATA_PENDIDIKAN } from '@/types/master/pendidikan/type';
+import { useEffect, useState } from 'react';
 
 export default function PendidikanView() {
-  const router = useRouter()
-  const [cookies] = useCookies(['accessToken'])
-  const [pendidikan, setPendidikan] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [deleteData, setDeleteData] = useState(false)
+  const router = useRouter();
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [pendidikanList, setPendidikanList] = useState<DATA_PENDIDIKAN[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDeleteData, setIsDeleteData] = useState<boolean>(false);
 
-  // Fetch data from API
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
+    const fetchPendidikanData = async () => {
+      setIsLoading(true);
       try {
-        const accessToken = cookies.accessToken
+        const accessToken = cookies.accessToken;
         const headers = {
           Authorization: `Bearer ${accessToken}`,
-        }
+        };
         const res = await axios.get(
           `${process.env.API_URL}/api/master/pendidikan`,
           {
             headers,
-          },
-        )
+          }
+        );
 
-        setPendidikan(res?.data?.data)
-        setLoading(false)
+        setPendidikanList(res?.data?.data);
+        setIsLoading(false);
       } catch (error) {
-        console.error(error)
+        console.error('Error fetching pendidikan data: ', error);
       } finally {
-        setLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [cookies.accessToken])
+    fetchPendidikanData();
+  }, [cookies.accessToken]);
 
-  // Delete data
-  const handleDeleteData = async (id: string) => {
-    setLoading(true)
+  const handleDeletePendidikan = async (id: string) => {
+    setIsLoading(true);
     try {
-      const accessToken = cookies.accessToken
+      const accessToken = cookies.accessToken;
       const headers = {
         Authorization: `Bearer ${accessToken}`,
-      }
+      };
 
       const res = await axios.delete(
         `${process.env.API_URL}/api/master/pendidikan/${id}`,
-        { headers },
-      )
+        { headers }
+      );
       if (res.status === 200) {
-        toast.success('Pendidikan berhasil dihapus!')
-        setPendidikan((prevData: any) =>
-          prevData.filter((item: any) => item.id !== id),
-        )
+        toast.success('Pendidikan berhasil dihapus!');
+        setPendidikanList((prevList: DATA_PENDIDIKAN[]) =>
+          prevList.filter((item: DATA_PENDIDIKAN) => item.id !== id)
+        );
 
-        router.refresh()
-        setDeleteData(true)
+        router.refresh();
+        setIsDeleteData(true);
       }
     } catch (error: any) {
-      console.log(error)
-      toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!')
+      console.error('Error fetching pendidikan data: ', error);
+      toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!');
     } finally {
-      setLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="mx-auto flex justify-center ">
         <Title as="h6" className="-me-2 mt-4 font-medium text-gray-500">
           Loading...
         </Title>
       </div>
-    )
+    );
   }
 
   return (
     <>
-      <Table data={pendidikan} onDeleteData={handleDeleteData} />
+      <Table data={pendidikanList} onDeleteData={handleDeletePendidikan} />
     </>
-  )
+  );
 }
