@@ -40,7 +40,7 @@ export default function EditJabatanView() {
   });
 
   useEffect(() => {
-    const fetchDataById = async () => {
+    const fetchDataJabatanById = async () => {
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -54,14 +54,16 @@ export default function EditJabatanView() {
 
         setDataJabatan(res?.data?.data);
       } catch (error) {
-        console.log(error);
+        console.log('Error: fetch data jabatan by id', error);
       }
     };
 
-    fetchDataById();
+    fetchDataJabatanById();
   }, [cookies.accessToken, id]);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleEditJabatan = async (
+    values: z.infer<typeof validationSchema>
+  ) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -81,8 +83,10 @@ export default function EditJabatanView() {
       }
     } catch (error: any) {
       if (error.response.status === 409) {
+        console.log('error', error);
         toast.error('Jabatan sudah ada');
       } else {
+        console.log('error', error);
         toast.error(
           'Terjadi kesalahan saat mengubah data, silahkan coba lagi!'
         );
@@ -94,7 +98,7 @@ export default function EditJabatanView() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
-        onSubmit={handleSubmit}
+        onSubmit={handleEditJabatan}
         resetValues={false}
         validationSchema={validationSchema}
         useFormProps={{

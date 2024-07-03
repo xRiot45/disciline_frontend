@@ -3,23 +3,22 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Table from './table';
-import { Data } from '@/types/master/jabatan/type';
 import { Title } from 'rizzui';
 import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
+import { DATA_JABATAN } from '@/types/master/jabatan/type';
 import { useEffect, useState } from 'react';
 
 export default function JabatanView() {
   const router = useRouter();
   const [cookies] = useCookies<string>(['accessToken']);
-  const [jabatan, setJabatan] = useState<Data[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [deleteData, setDeleteData] = useState<boolean>(false);
+  const [jabatanList, setJabatanList] = useState<DATA_JABATAN[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDeleteData, setIsDeleteData] = useState<boolean>(false);
 
-  // Fetch data from API
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+    const fetchJabatanData = async () => {
+      setIsLoading(true);
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -32,21 +31,20 @@ export default function JabatanView() {
           }
         );
 
-        setJabatan(res?.data?.data);
-        setLoading(false);
+        setJabatanList(res?.data?.data);
+        setIsLoading(false);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching jabatan data: ', error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
-    fetchData();
+    fetchJabatanData();
   }, [cookies.accessToken]);
 
-  // Delete data
-  const handleDeleteData = async (id: string) => {
-    setLoading(true);
+  const handleDeleteJabatan = async (id: string) => {
+    setIsLoading(true);
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -59,22 +57,22 @@ export default function JabatanView() {
       );
       if (res.status === 200) {
         toast.success('Jabatan berhasil dihapus!');
-        setJabatan((prevData: Data[]) =>
-          prevData.filter((item: Data) => item.id !== id)
+        setJabatanList((prevList: DATA_JABATAN[]) =>
+          prevList.filter((item: DATA_JABATAN) => item.id !== id)
         );
 
         router.refresh();
-        setDeleteData(true);
+        setIsDeleteData(true);
       }
     } catch (error: any) {
-      console.log(error);
+      console.log('Error deleting data: ', error);
       toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="mx-auto flex justify-center ">
         <Title as="h6" className="-me-2 mt-4 font-medium text-gray-500">
@@ -86,7 +84,7 @@ export default function JabatanView() {
 
   return (
     <>
-      <Table data={jabatan} onDeleteData={handleDeleteData} />
+      <Table data={jabatanList} onDeleteData={handleDeleteJabatan} />
     </>
   );
 }

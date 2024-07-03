@@ -33,7 +33,7 @@ export default function TambahJabatanView() {
   const router = useRouter();
   const [cookies] = useCookies<string>(['accessToken']);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleAddJabatan = async (values: z.infer<typeof validationSchema>) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -67,7 +67,7 @@ export default function TambahJabatanView() {
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={handleAddJabatan}
       >
         {({ register, formState: { errors } }) => (
           <div className="space-y-3">

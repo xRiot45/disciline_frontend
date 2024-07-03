@@ -1,11 +1,11 @@
 import TableLayout from '@/layouts/table-layout';
 import BasicTableWidget from '@/components/controlled-table/basic-table-widget';
-import { Data } from '@/types/master/jabatan/type';
 import { PiPlusBold } from 'react-icons/pi';
 import { getColumns } from './columns';
+import { DATA_JABATAN } from '@/types/master/jabatan/type';
 
 interface Proptypes {
-  data: Data[];
+  data: DATA_JABATAN[];
   onDeleteData: (id: string) => void;
 }
 

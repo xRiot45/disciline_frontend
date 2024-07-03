@@ -1,10 +1,10 @@
 import { Input } from 'rizzui';
-import { FormValues } from '@/types/master/jabatan/type';
+import { DATA_JABATAN_FORM } from '@/types/master/jabatan/type';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 interface Proptypes {
-  register: UseFormRegister<FormValues>;
-  errors: FieldErrors<FormValues>;
+  register: UseFormRegister<DATA_JABATAN_FORM>;
+  errors: FieldErrors<DATA_JABATAN_FORM>;
 }
 
 export default function FormLayout(props: Proptypes) {
