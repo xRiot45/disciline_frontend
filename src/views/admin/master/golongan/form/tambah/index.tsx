@@ -13,7 +13,7 @@ import { useCookies } from 'react-cookie';
 import { validationSchema, ValidationSchema } from '../validationSchema';
 
 const pageHeader = {
-  title: 'Golongan',
+  title: 'Tambah Golongan',
   breadcrumb: [
     {
       href: '/admin/dashboard',
@@ -31,7 +31,7 @@ const pageHeader = {
 
 export default function TambahGolonganView() {
   const router = useRouter();
-  const [cookies] = useCookies(['accessToken']);
+  const [cookies] = useCookies<string>(['accessToken']);
 
   const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
     try {

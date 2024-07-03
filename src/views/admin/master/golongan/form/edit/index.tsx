@@ -14,7 +14,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { validationSchema, ValidationSchema } from '../validationSchema';
 
 const pageHeader = {
-  title: 'Golongan',
+  title: 'Edit Golongan',
   breadcrumb: [
     {
       href: '/admin/dashboard',
@@ -34,8 +34,10 @@ export default function EditGolonganView() {
   const router = useRouter();
   const pathname = usePathname();
   const id = pathname.split('/').pop();
-  const [cookies] = useCookies(['accessToken']);
-  const [namagolongan, setNamagolongan] = useState<string | any>('');
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [dataGolongan, setDataGolongan] = useState({
+    nama_golongan: '' as string,
+  });
 
   useEffect(() => {
     const fetchDataById = async () => {
@@ -49,7 +51,8 @@ export default function EditGolonganView() {
           `${process.env.API_URL}/api/master/golongan/${id}`,
           { headers }
         );
-        setNamagolongan(res?.data?.data);
+
+        setDataGolongan(res?.data?.data);
       } catch (error) {
         console.log(error);
       }
@@ -96,7 +99,7 @@ export default function EditGolonganView() {
         validationSchema={validationSchema}
         useFormProps={{
           values: {
-            nama_golongan: namagolongan?.nama_golongan,
+            nama_golongan: dataGolongan?.nama_golongan,
           },
           mode: 'onChange',
         }}

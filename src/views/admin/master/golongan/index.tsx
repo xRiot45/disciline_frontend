@@ -1,77 +1,78 @@
-'use client'
+'use client';
 
-import axios from 'axios'
-import toast from 'react-hot-toast'
-import { Title } from 'rizzui'
-import { useRouter } from 'next/navigation'
-import { useCookies } from 'react-cookie'
-import { useEffect, useState } from 'react'
-import Table from './table'
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import Table from './table';
+import { Data } from '@/types/master/golongan/type';
+import { Title } from 'rizzui';
+import { useRouter } from 'next/navigation';
+import { useCookies } from 'react-cookie';
+import { useEffect, useState } from 'react';
 
 export default function GolonganView() {
-  const router = useRouter()
-  const [cookies] = useCookies(['accessToken'])
-  const [golongan, setGolongan] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [deleteData, setDeleteData] = useState(false)
+  const router = useRouter();
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [golongan, setGolongan] = useState<Data[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [deleteData, setDeleteData] = useState<boolean>(false);
 
   // Fetch data from API
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-        const accessToken = cookies.accessToken
+        const accessToken = cookies.accessToken;
         const headers = {
           Authorization: `Bearer ${accessToken}`,
-        }
+        };
         const res = await axios.get(
           `${process.env.API_URL}/api/master/golongan`,
           {
             headers,
-          },
-        )
+          }
+        );
 
-        setGolongan(res?.data?.data)
-        setLoading(false)
+        setGolongan(res?.data?.data);
+        setLoading(false);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [cookies.accessToken])
+    fetchData();
+  }, [cookies.accessToken]);
 
   // Delete data
   const handleDeleteData = async (id: string) => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const accessToken = cookies.accessToken
+      const accessToken = cookies.accessToken;
       const headers = {
         Authorization: `Bearer ${accessToken}`,
-      }
+      };
 
       const res = await axios.delete(
         `${process.env.API_URL}/api/master/golongan/${id}`,
-        { headers },
-      )
+        { headers }
+      );
       if (res.status === 200) {
-        toast.success('Golongan berhasil dihapus!')
-        setGolongan((prevData: any) =>
-          prevData.filter((item: any) => item.id !== id),
-        )
+        toast.success('Golongan berhasil dihapus!');
+        setGolongan((prevData: Data[]) =>
+          prevData.filter((item: Data) => item.id !== id)
+        );
 
-        router.refresh()
-        setDeleteData(true)
+        router.refresh();
+        setDeleteData(true);
       }
     } catch (error: any) {
-      console.log(error)
-      toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!')
+      console.log(error);
+      toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -80,12 +81,12 @@ export default function GolonganView() {
           Loading...
         </Title>
       </div>
-    )
+    );
   }
 
   return (
     <>
       <Table data={golongan} onDeleteData={handleDeleteData} />
     </>
-  )
+  );
 }
