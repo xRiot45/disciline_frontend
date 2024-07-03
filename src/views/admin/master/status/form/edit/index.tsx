@@ -60,7 +60,7 @@ export default function EditStatusView() {
     fetchDataStatusById();
   }, [cookies.accessToken, id]);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleEditStatus = async (values: z.infer<typeof validationSchema>) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -83,6 +83,7 @@ export default function EditStatusView() {
         console.log('error: ', error);
         toast.error('Status sudah ada');
       } else {
+        console.log('error: ', error);
         toast.error(
           'Terjadi kesalahan saat mengubah data, silahkan coba lagi!'
         );
@@ -94,7 +95,7 @@ export default function EditStatusView() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
-        onSubmit={handleSubmit}
+        onSubmit={handleEditStatus}
         resetValues={false}
         validationSchema={validationSchema}
         useFormProps={{
