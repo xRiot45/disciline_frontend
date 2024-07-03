@@ -57,8 +57,8 @@ export default function GolonganView() {
       );
       if (res.status === 200) {
         toast.success('Golongan berhasil dihapus!');
-        setGolonganList((prevData: DATA_GOLONGAN[]) =>
-          prevData.filter((item: DATA_GOLONGAN) => item.id !== id)
+        setGolonganList((prevList: DATA_GOLONGAN[]) =>
+          prevList.filter((item: DATA_GOLONGAN) => item.id !== id)
         );
 
         router.refresh();
