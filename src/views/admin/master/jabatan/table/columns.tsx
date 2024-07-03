@@ -29,7 +29,7 @@ export const getColumns = ({ onDeleteItem }: Columns) => [
     ),
   },
   {
-    title: <HeaderCell title="Actions" />,
+    title: <HeaderCell title="Aksi" />,
     dataIndex: 'id',
     width: 20,
     key: 'id',
