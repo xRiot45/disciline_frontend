@@ -5,10 +5,10 @@ import { Data } from '@/types/master/agama/type';
 import { HeaderCell } from '@/components/ui/table';
 import { ActionIcon, Text, Tooltip } from 'rizzui';
 
-type Columns = {
+interface Columns {
   data: Data[];
   onDeleteItem: (id: string) => void;
-};
+}
 
 export const getColumns = ({ onDeleteItem }: Columns) => [
   {
