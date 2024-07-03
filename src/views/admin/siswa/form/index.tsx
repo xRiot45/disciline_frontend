@@ -70,7 +70,6 @@ export default function FormLayout(props: Proptypes) {
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
-              error={errors.tanggal_lahir?.message}
             />
           )}
         />
