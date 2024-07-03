@@ -87,7 +87,7 @@ export const getColumns = ({ onDeleteItem }: Columns) => [
     render: (alamat: string) => <Text className="text-sm">{alamat}</Text>,
   },
   {
-    title: <HeaderCell title="Actions" />,
+    title: <HeaderCell title="Aksi" />,
     dataIndex: 'id',
     width: 20,
     key: 'id',
