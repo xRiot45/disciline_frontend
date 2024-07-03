@@ -11,10 +11,10 @@ import { useRouter } from 'next/navigation';
 import { validationSchema } from './validationSchema';
 import { Input, Button, Password } from 'rizzui';
 
-export default function SignInForm() {
+export default function FormLayout() {
   const router = useRouter();
   const isMedium = useMedia('(max-width: 1200px)', false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSignIn = async (values: z.infer<typeof validationSchema>) => {
     setLoading(true);
@@ -28,7 +28,7 @@ export default function SignInForm() {
         Cookies.set('accessToken', accessToken, {
           expires: 1,
         });
-        toast.success('Berhasil login, sedang diarahkan ke halaman dashboard');
+        toast.success('Berhasil login!');
         router.refresh();
         router.push('/admin/dashboard');
       }
@@ -66,9 +66,6 @@ export default function SignInForm() {
               {...register('password')}
               error={errors.password?.message}
             />
-            {/* <div className="flex items-center justify-between lg:pb-2">
-              <Switch label="Remember Me" {...register('rememberMe')} />
-            </div> */}
 
             {loading ? (
               <Button

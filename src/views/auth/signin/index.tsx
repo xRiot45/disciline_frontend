@@ -1,5 +1,5 @@
+import FormLayout from './form';
 import AuthWrapper from '@/shared/auth-layout/auth-wrapper';
-import SignInForm from './Form';
 
 export default function SignView() {
   return (
@@ -15,7 +15,7 @@ export default function SignView() {
       isSignIn
       isSocialLoginActive={true}
     >
-      <SignInForm />
+      <FormLayout />
     </AuthWrapper>
   );
 }

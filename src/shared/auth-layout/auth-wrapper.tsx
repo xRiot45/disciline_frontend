@@ -27,8 +27,8 @@ export default function AuthWrapper({
           )}
         >
           <div className="flex flex-col items-center">
-            <Link href={'/'} className="mb-4 inline-block ">
-              <Image src={logoDarkImg} alt="logo" width={90} height={90} />
+            <Link href={'/'} className="mb-6 inline-block ">
+              <Image src={logoDarkImg} alt="logo" width={80} height={80} />
             </Link>
             <Title
               as="h2"
