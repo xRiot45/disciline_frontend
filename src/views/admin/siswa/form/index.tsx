@@ -1,18 +1,26 @@
-import AgamaSelect from '@/utils/agamaSelect'
-import KelasSelect from '@/utils/kelasSelect'
-import JenisKelaminSelect from '@/utils/jenisKelaminSelect'
-import { Controller } from 'react-hook-form'
-import { DatePicker } from '@/components/ui/datepicker'
-import { Input, Textarea } from 'rizzui'
+import AgamaSelect from '@/utils/agamaSelect';
+import KelasSelect from '@/utils/kelasSelect';
+import JenisKelaminSelect from '@/utils/jenisKelaminSelect';
+import { DatePicker } from '@/components/ui/datepicker';
+import { Input, Textarea } from 'rizzui';
+import { DATA_SISWA_FORM } from '@/types/siswa/type';
+import { ValidationSchema } from './validationSchema';
+import { handleNumericChange } from '@/helpers/numericChange';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormRegister,
+} from 'react-hook-form';
 
 interface Proptypes {
-  control: any
-  register: any
-  errors: any
+  register: UseFormRegister<DATA_SISWA_FORM>;
+  errors: FieldErrors<DATA_SISWA_FORM>;
+  control: Control<ValidationSchema>;
 }
 
 export default function FormLayout(props: Proptypes) {
-  const { register, errors, control } = props
+  const { register, errors, control } = props;
   return (
     <>
       <div className="grid gap-5 md:grid-cols-2">
@@ -36,6 +44,7 @@ export default function FormLayout(props: Proptypes) {
           inputClassName="text-sm"
           {...register('nis')}
           error={errors.nis?.message}
+          onChange={handleNumericChange}
         />
 
         <Input
@@ -47,6 +56,7 @@ export default function FormLayout(props: Proptypes) {
           inputClassName="text-sm"
           {...register('nisn')}
           error={errors.nisn?.message}
+          onChange={handleNumericChange}
         />
 
         <Controller
@@ -60,6 +70,7 @@ export default function FormLayout(props: Proptypes) {
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
+              error={errors.tanggal_lahir?.message}
             />
           )}
         />
@@ -102,6 +113,7 @@ export default function FormLayout(props: Proptypes) {
           inputClassName="text-sm"
           {...register('no_telp_wali')}
           error={errors.no_telp_wali?.message}
+          onChange={handleNumericChange}
         />
       </div>
 
@@ -111,5 +123,5 @@ export default function FormLayout(props: Proptypes) {
         error={errors.alamat?.message}
       />
     </>
-  )
+  );
 }

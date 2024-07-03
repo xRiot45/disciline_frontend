@@ -1,87 +1,86 @@
-'use client'
+'use client';
 
-import axios from 'axios'
-import toast from 'react-hot-toast'
-import Table from './table'
-import { Title } from 'rizzui'
-import { useRouter } from 'next/navigation'
-import { useCookies } from 'react-cookie'
-import { useEffect, useState } from 'react'
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import Table from './table';
+import { Title } from 'rizzui';
+import { useRouter } from 'next/navigation';
+import { useCookies } from 'react-cookie';
+import { DATA_SISWA } from '@/types/siswa/type';
+import { useEffect, useState } from 'react';
 
 export default function SiswaView() {
-  const router = useRouter()
-  const [cookies] = useCookies(['accessToken'])
-  const [siswa, setSiswa] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [deleteData, setDeleteData] = useState(false)
+  const router = useRouter();
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [siswaList, setSiswaList] = useState<DATA_SISWA[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [idDeleteData, setIsDeleteData] = useState<boolean>(false);
 
-  // Fetch data from API
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
+    const fetchSiswaData = async () => {
+      setIsLoading(true);
       try {
-        const accessToken = cookies.accessToken
+        const accessToken = cookies.accessToken;
         const headers = {
           Authorization: `Bearer ${accessToken}`,
-        }
+        };
         const res = await axios.get(`${process.env.API_URL}/api/siswa`, {
           headers,
-        })
+        });
 
-        setSiswa(res?.data?.data)
-        setLoading(false)
+        setSiswaList(res?.data?.data);
+        setIsLoading(false);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       } finally {
-        setLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [cookies.accessToken])
+    fetchSiswaData();
+  }, [cookies.accessToken]);
 
-  // Delete data
   const handleDeleteData = async (id: string) => {
-    setLoading(true)
+    setIsLoading(true);
     try {
-      const accessToken = cookies.accessToken
+      const accessToken = cookies.accessToken;
       const headers = {
         Authorization: `Bearer ${accessToken}`,
-      }
+      };
 
       const res = await axios.delete(`${process.env.API_URL}/api/siswa/${id}`, {
         headers,
-      })
+      });
       if (res.status === 200) {
-        toast.success('Siswa berhasil dihapus!')
-        setSiswa((prevData: any) =>
-          prevData.filter((item: any) => item.id !== id),
-        )
+        toast.success('Siswa berhasil dihapus!');
+        setSiswaList((prevList: DATA_SISWA[]) =>
+          prevList.filter((item: DATA_SISWA) => item.id !== id)
+        );
 
-        router.refresh()
-        setDeleteData(true)
+        router.refresh();
+        setIsLoading(true);
       }
-    } catch (error: any) {
-      console.log(error)
-      toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!')
+    } catch (error) {
+      console.log(error);
+      toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!');
     } finally {
-      setLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="mx-auto flex justify-center ">
         <Title as="h6" className="-me-2 mt-4 font-medium text-gray-500">
           Loading...
         </Title>
       </div>
-    )
+    );
   }
 
   return (
     <>
-      <Table data={siswa} onDeleteData={handleDeleteData} />
+      <Table data={siswaList} onDeleteData={handleDeleteData} />
     </>
-  )
+  );
 }

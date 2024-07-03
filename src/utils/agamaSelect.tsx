@@ -4,13 +4,22 @@ import axios from 'axios';
 import { Select } from 'rizzui';
 import { useCookies } from 'react-cookie';
 import { DATA_AGAMA } from '@/types/master/agama/type';
-import { ValidationSchema } from '@/views/admin/guru/form/validationSchema';
+import { ValidationSchema as GuruValidationSchema } from '@/views/admin/guru/form/validationSchema';
+import { ValidationSchema as SiswaValidationSchema } from '@/views/admin/siswa/form/validationSchema';
 import { useEffect, useState } from 'react';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 
 interface PropTypes {
-  control: Control<ValidationSchema>;
-  error: string | undefined | FieldErrors<ValidationSchema>;
+  control:
+    | Control<GuruValidationSchema>
+    | Control<SiswaValidationSchema>
+    | undefined
+    | any;
+  error:
+    | string
+    | undefined
+    | FieldErrors<GuruValidationSchema>
+    | FieldErrors<SiswaValidationSchema>;
 }
 
 export default function AgamaSelect(props: PropTypes) {

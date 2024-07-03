@@ -1,15 +1,16 @@
-'use client'
+'use client';
 
-import { Select } from 'rizzui'
-import { Controller } from 'react-hook-form'
+import { Select } from 'rizzui';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { ValidationSchema } from '@/views/admin/siswa/form/validationSchema';
 
-interface Proptypes {
-  control: any
-  error: string | any
+interface PropTypes {
+  control: Control<ValidationSchema>;
+  error: string | undefined | FieldErrors<ValidationSchema>;
 }
 
-export default function JenisKelaminSelect(props: Proptypes) {
-  const { control, error } = props
+export default function JenisKelaminSelect(props: PropTypes) {
+  const { control, error } = props;
 
   const jenisKelaminOptions = [
     {
@@ -20,30 +21,29 @@ export default function JenisKelaminSelect(props: Proptypes) {
       value: 'Perempuan',
       label: 'Perempuan',
     },
-  ]
+  ];
 
   return (
     <>
       <Controller
         name="jenis_kelamin"
         control={control}
-        defaultValue={null}
         render={({ field: { onChange, value } }) => {
           return (
             <Select
               size="lg"
               label="Jenis Kelamin"
               value={value}
-              error={error}
+              error={typeof error === 'string' ? error : undefined}
               placeholder="Pilih Jenis Kelamin..."
               dropdownClassName="!z-0"
               options={jenisKelaminOptions}
               onChange={onChange}
               getOptionValue={(option) => option.value}
             />
-          )
+          );
         }}
       />
     </>
-  )
+  );
 }

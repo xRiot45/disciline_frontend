@@ -2,45 +2,25 @@ import Link from 'next/link';
 import PencilIcon from '@/components/icons/pencil';
 import FormatTanggal from '@/helpers/formatTanggal';
 import DeletePopover from '@/shared/delete-popover';
+import { DATA_SISWA } from '@/types/siswa/type';
 import { HeaderCell } from '@/components/ui/table';
 import { ActionIcon, Text, Tooltip } from 'rizzui';
 
-type Data = {
-  id: string;
-  nama_lengkap: string;
-  nis: string;
-  nisn: string;
-  tanggal_lahir: string;
-  tempat_lahir: string;
-  jenis_kelamin: string;
-  kelas: {
-    id: string;
-    nama_kelas: string;
-    jurusan: {
-      id: string;
-      nama_jurusan: string;
-    };
-    guru: {
-      id: string;
-      nama_guru: string;
-      no_telp: string;
-    };
-  };
-  agama: {
-    id: string;
-    nama_agama: string;
-  };
-  nama_wali: string;
-  no_telp_wali: string;
-  alamat: string;
-};
-
-type Columns = {
-  data: Data[];
+interface Columns {
+  data: DATA_SISWA[];
   onDeleteItem: (id: string) => void;
-};
+}
 
 export const getColumns = ({ onDeleteItem }: Columns) => [
+  {
+    title: <HeaderCell title="No" />,
+    width: 50,
+    dataIndex: 'index',
+    key: 'index',
+    render: (text: unknown, record: unknown, index: number) => (
+      <Text className="text-sm">{index + 1}</Text>
+    ),
+  },
   {
     title: <HeaderCell title="Nama Lengkap" />,
     dataIndex: 'nama_lengkap',
@@ -133,7 +113,7 @@ export const getColumns = ({ onDeleteItem }: Columns) => [
   },
 
   {
-    title: <HeaderCell title="Actions" />,
+    title: <HeaderCell title="Aksi" />,
     dataIndex: 'id',
     width: 20,
     key: 'id',

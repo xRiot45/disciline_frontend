@@ -69,6 +69,7 @@ export const DatePicker = ({
         customInput={
           customInput || (
             <Input
+              size="lg"
               prefix={<PiCalendarBlank className="h-5 w-5 text-gray-500" />}
               suffix={
                 <PiCaretDownBold

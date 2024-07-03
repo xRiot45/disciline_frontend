@@ -14,7 +14,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { validationSchema, ValidationSchema } from '../validationSchema';
 
 const pageHeader = {
-  title: 'Siswa',
+  title: 'Edit Siswa',
   breadcrumb: [
     {
       href: '/admin/dashboard',
@@ -34,8 +34,25 @@ export default function EditSiswaView() {
   const router = useRouter();
   const pathname = usePathname();
   const id = pathname.split('/').pop();
-  const [cookies] = useCookies(['accessToken']);
-  const [dataSiswa, setDataSiswa] = useState<any>({});
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [dataSiswa, setDataSiswa] = useState({
+    nama_lengkap: '' as string,
+    nis: '' as string,
+    nisn: '' as string,
+    tanggal_lahir: new Date() as Date,
+    tempat_lahir: '',
+    jenis_kelamin: '',
+    agama: {
+      id: '',
+    },
+
+    kelas: {
+      id: '',
+    },
+    nama_wali: '',
+    no_telp_wali: '',
+    alamat: '',
+  });
 
   useEffect(() => {
     const fetchDataById = async () => {
@@ -58,7 +75,7 @@ export default function EditSiswaView() {
     fetchDataById();
   }, [cookies.accessToken, id]);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleEditSiswa = async (values: z.infer<typeof validationSchema>) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -91,7 +108,7 @@ export default function EditSiswaView() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
-        onSubmit={handleSubmit}
+        onSubmit={handleEditSiswa}
         resetValues={false}
         validationSchema={validationSchema}
         useFormProps={{
