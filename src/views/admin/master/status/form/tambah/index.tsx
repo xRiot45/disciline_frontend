@@ -13,7 +13,7 @@ import { useCookies } from 'react-cookie';
 import { validationSchema, ValidationSchema } from '../validationSchema';
 
 const pageHeader = {
-  title: 'Status',
+  title: 'Tambah Status',
   breadcrumb: [
     {
       href: '/admin/dashboard',
@@ -31,7 +31,7 @@ const pageHeader = {
 
 export default function TambahStatusView() {
   const router = useRouter();
-  const [cookies] = useCookies(['accessToken']);
+  const [cookies] = useCookies<string>(['accessToken']);
 
   const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
     try {

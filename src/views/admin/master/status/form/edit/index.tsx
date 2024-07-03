@@ -8,13 +8,13 @@ import PageHeader from '@/shared/page-header';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import { Button } from 'rizzui';
+import { useCookies } from 'react-cookie';
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { validationSchema, ValidationSchema } from '../validationSchema';
-import { useCookies } from 'react-cookie';
 
 const pageHeader = {
-  title: 'Status',
+  title: 'Edit Status',
   breadcrumb: [
     {
       href: '/admin/dashboard',
@@ -34,8 +34,10 @@ export default function EditStatusView() {
   const router = useRouter();
   const pathname = usePathname();
   const id = pathname.split('/').pop();
-  const [cookies] = useCookies(['accessToken']);
-  const [namastatus, setNamastatus] = useState<string | any>('');
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [dataStatus, setDataStatus] = useState({
+    nama_status: '' as string,
+  });
 
   useEffect(() => {
     const fetchDataById = async () => {
@@ -49,7 +51,7 @@ export default function EditStatusView() {
           `${process.env.API_URL}/api/master/status/${id}`,
           { headers }
         );
-        setNamastatus(res?.data?.data);
+        setDataStatus(res?.data?.data);
       } catch (error) {
         console.log(error);
       }
@@ -96,7 +98,7 @@ export default function EditStatusView() {
         validationSchema={validationSchema}
         useFormProps={{
           values: {
-            nama_status: namastatus?.nama_status,
+            nama_status: dataStatus?.nama_status,
           },
           mode: 'onChange',
         }}
