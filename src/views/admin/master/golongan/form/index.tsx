@@ -1,10 +1,10 @@
 import { Input } from 'rizzui';
-import { FormValues } from '@/types/master/golongan/type';
+import { DATA_GOLONGAN_FORM } from '@/types/master/golongan/type';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 interface Proptypes {
-  register: UseFormRegister<FormValues>;
-  errors: FieldErrors<FormValues>;
+  register: UseFormRegister<DATA_GOLONGAN_FORM>;
+  errors: FieldErrors<DATA_GOLONGAN_FORM>;
 }
 
 export default function FormLayout(props: Proptypes) {

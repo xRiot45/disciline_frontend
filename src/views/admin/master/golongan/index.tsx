@@ -3,23 +3,22 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Table from './table';
-import { Data } from '@/types/master/golongan/type';
 import { Title } from 'rizzui';
 import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
+import { DATA_GOLONGAN } from '@/types/master/golongan/type';
 import { useEffect, useState } from 'react';
 
 export default function GolonganView() {
   const router = useRouter();
   const [cookies] = useCookies<string>(['accessToken']);
-  const [golongan, setGolongan] = useState<Data[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [deleteData, setDeleteData] = useState<boolean>(false);
+  const [golonganList, setGolonganList] = useState<DATA_GOLONGAN[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDeleteData, setIsDeleteData] = useState<boolean>(false);
 
-  // Fetch data from API
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+    const fetchGolonganData = async () => {
+      setIsLoading(true);
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -32,21 +31,20 @@ export default function GolonganView() {
           }
         );
 
-        setGolongan(res?.data?.data);
-        setLoading(false);
+        setGolonganList(res?.data?.data);
+        setIsLoading(false);
       } catch (error) {
-        console.error(error);
+        console.error('Error: fetch data golongan', error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
-    fetchData();
+    fetchGolonganData();
   }, [cookies.accessToken]);
 
-  // Delete data
-  const handleDeleteData = async (id: string) => {
-    setLoading(true);
+  const handleDeleteGolongan = async (id: string) => {
+    setIsLoading(true);
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -59,22 +57,22 @@ export default function GolonganView() {
       );
       if (res.status === 200) {
         toast.success('Golongan berhasil dihapus!');
-        setGolongan((prevData: Data[]) =>
-          prevData.filter((item: Data) => item.id !== id)
+        setGolonganList((prevData: DATA_GOLONGAN[]) =>
+          prevData.filter((item: DATA_GOLONGAN) => item.id !== id)
         );
 
         router.refresh();
-        setDeleteData(true);
+        setIsDeleteData(true);
       }
     } catch (error: any) {
       console.log(error);
       toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="mx-auto flex justify-center ">
         <Title as="h6" className="-me-2 mt-4 font-medium text-gray-500">
@@ -86,7 +84,7 @@ export default function GolonganView() {
 
   return (
     <>
-      <Table data={golongan} onDeleteData={handleDeleteData} />
+      <Table data={golonganList} onDeleteData={handleDeleteGolongan} />
     </>
   );
 }

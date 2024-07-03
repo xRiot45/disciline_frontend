@@ -1,11 +1,11 @@
 import TableLayout from '@/layouts/table-layout';
 import BasicTableWidget from '@/components/controlled-table/basic-table-widget';
-import { Data } from '@/types/master/golongan/type';
 import { PiPlusBold } from 'react-icons/pi';
 import { getColumns } from './columns';
+import { DATA_GOLONGAN } from '@/types/master/golongan/type';
 
 interface Proptypes {
-  data: Data[];
+  data: DATA_GOLONGAN[];
   onDeleteData: (id: string) => void;
 }
 

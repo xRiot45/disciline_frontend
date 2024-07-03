@@ -40,7 +40,7 @@ export default function EditGolonganView() {
   });
 
   useEffect(() => {
-    const fetchDataById = async () => {
+    const fetchDataGolonganById = async () => {
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -58,10 +58,12 @@ export default function EditGolonganView() {
       }
     };
 
-    fetchDataById();
+    fetchDataGolonganById();
   }, [cookies.accessToken, id]);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleEditGolongan = async (
+    values: z.infer<typeof validationSchema>
+  ) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -81,8 +83,10 @@ export default function EditGolonganView() {
       }
     } catch (error: any) {
       if (error.response.status === 409) {
+        console.log(error);
         toast.error('Golongan sudah ada');
       } else {
+        console.log(error);
         toast.error(
           'Terjadi kesalahan saat mengubah data, silahkan coba lagi!'
         );
@@ -94,7 +98,7 @@ export default function EditGolonganView() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
-        onSubmit={handleSubmit}
+        onSubmit={handleEditGolongan}
         resetValues={false}
         validationSchema={validationSchema}
         useFormProps={{

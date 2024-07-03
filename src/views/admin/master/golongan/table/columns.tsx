@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import PencilIcon from '@/components/icons/pencil';
 import DeletePopover from '@/shared/delete-popover';
-import { Data } from '@/types/master/golongan/type';
 import { HeaderCell } from '@/components/ui/table';
+import { DATA_GOLONGAN } from '@/types/master/golongan/type';
 import { ActionIcon, Text, Tooltip } from 'rizzui';
 
 interface Columns {
-  data: Data[];
+  data: DATA_GOLONGAN[];
   onDeleteItem: (id: string) => void;
 }
 
