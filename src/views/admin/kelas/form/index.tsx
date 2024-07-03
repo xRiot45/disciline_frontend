@@ -1,15 +1,18 @@
-import GuruSelect from '@/utils/guruSelect'
-import JurusanSelect from '@/utils/jurusanSelect'
-import { Input } from 'rizzui'
+import GuruSelect from '@/utils/guruSelect';
+import JurusanSelect from '@/utils/jurusanSelect';
+import { Input } from 'rizzui';
+import { DATA_KELAS_FORM } from '@/types/kelas/type';
+import { ValidationSchema } from './validationSchema';
+import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 
-interface Proptypes {
-  control: any
-  register: any
-  errors: any
+interface PropTypes {
+  register: UseFormRegister<DATA_KELAS_FORM>;
+  errors: FieldErrors<DATA_KELAS_FORM>;
+  control: Control<ValidationSchema>;
 }
 
-export default function FormLayout(props: Proptypes) {
-  const { register, errors, control } = props
+export default function FormLayout(props: PropTypes) {
+  const { register, errors, control } = props;
   return (
     <>
       <Input
@@ -23,8 +26,8 @@ export default function FormLayout(props: Proptypes) {
         error={errors.nama_kelas?.message}
       />
 
-      <JurusanSelect control={control} error={errors.statusId?.message} />
-      <GuruSelect control={control} error={errors.golonganId?.message} />
+      <JurusanSelect control={control} error={errors.jurusanId?.message} />
+      <GuruSelect control={control} error={errors.guruId?.message} />
     </>
-  )
+  );
 }

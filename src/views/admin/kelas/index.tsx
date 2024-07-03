@@ -1,87 +1,86 @@
-'use client'
+'use client';
 
-import axios from 'axios'
-import Table from './table'
-import toast from 'react-hot-toast'
-import { Title } from 'rizzui'
-import { useRouter } from 'next/navigation'
-import { useCookies } from 'react-cookie'
-import { useEffect, useState } from 'react'
+import axios from 'axios';
+import Table from './table';
+import toast from 'react-hot-toast';
+import { Title } from 'rizzui';
+import { useRouter } from 'next/navigation';
+import { useCookies } from 'react-cookie';
+import { DATA_KELAS } from '@/types/kelas/type';
+import { useEffect, useState } from 'react';
 
 export default function KelasView() {
-  const router = useRouter()
-  const [cookies] = useCookies(['accessToken'])
-  const [kelas, setKelas] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [deleteData, setDeleteData] = useState(false)
+  const router = useRouter();
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [kelasList, setKelasList] = useState<DATA_KELAS[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDeleteData, setIsDeleteData] = useState<boolean>(false);
 
-  // Fetch data from API
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
+    const fetchKelasData = async () => {
+      setIsLoading(true);
       try {
-        const accessToken = cookies.accessToken
+        const accessToken = cookies.accessToken;
         const headers = {
           Authorization: `Bearer ${accessToken}`,
-        }
+        };
         const res = await axios.get(`${process.env.API_URL}/api/kelas`, {
           headers,
-        })
+        });
 
-        setKelas(res?.data?.data)
-        setLoading(false)
+        setKelasList(res?.data?.data);
+        setIsLoading(false);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       } finally {
-        setLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [cookies.accessToken])
+    fetchKelasData();
+  }, [cookies.accessToken]);
 
-  // Delete data
-  const handleDeleteData = async (id: string) => {
-    setLoading(true)
+  const handleDeleteKelas = async (id: string) => {
+    setIsLoading(true);
     try {
-      const accessToken = cookies.accessToken
+      const accessToken = cookies.accessToken;
       const headers = {
         Authorization: `Bearer ${accessToken}`,
-      }
+      };
 
       const res = await axios.delete(`${process.env.API_URL}/api/kelas/${id}`, {
         headers,
-      })
+      });
       if (res.status === 200) {
-        toast.success('Kelas berhasil dihapus!')
-        setKelas((prevData: any) =>
-          prevData.filter((item: any) => item.id !== id),
-        )
+        toast.success('Kelas berhasil dihapus!');
+        setKelasList((prevList: any) =>
+          prevList.filter((item: any) => item.id !== id)
+        );
 
-        router.refresh()
-        setDeleteData(true)
+        router.refresh();
+        setIsDeleteData(true);
       }
-    } catch (error: any) {
-      console.log(error)
-      toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!')
+    } catch (error) {
+      console.log(error);
+      toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!');
     } finally {
-      setLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="mx-auto flex justify-center ">
         <Title as="h6" className="-me-2 mt-4 font-medium text-gray-500">
           Loading...
         </Title>
       </div>
-    )
+    );
   }
 
   return (
     <>
-      <Table data={kelas} onDeleteData={handleDeleteData} />
+      <Table data={kelasList} onDeleteData={handleDeleteKelas} />
     </>
-  )
+  );
 }
