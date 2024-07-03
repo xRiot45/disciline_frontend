@@ -34,11 +34,19 @@ export default function EditPelanggaranView() {
   const router = useRouter();
   const pathname = usePathname();
   const id = pathname.split('/').pop();
-  const [cookies] = useCookies(['accessToken']);
-  const [dataPelanggaran, setDataPelanggaran] = useState<any>({});
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [dataPelanggaran, setDataPelanggaran] = useState({
+    tipe_pelanggaran: {
+      id: '',
+    },
+    siswa: {
+      id: '',
+    },
+    keterangan: '',
+  });
 
   useEffect(() => {
-    const fetchDataById = async () => {
+    const fetchPelanggaranDataById = async () => {
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -58,10 +66,12 @@ export default function EditPelanggaranView() {
       }
     };
 
-    fetchDataById();
+    fetchPelanggaranDataById();
   }, [cookies.accessToken, id]);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleEditPelanggaran = async (
+    values: z.infer<typeof validationSchema>
+  ) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -89,8 +99,7 @@ export default function EditPelanggaranView() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
-        onSubmit={handleSubmit}
-        resetValues={false}
+        onSubmit={handleEditPelanggaran}
         validationSchema={validationSchema}
         useFormProps={{
           values: {

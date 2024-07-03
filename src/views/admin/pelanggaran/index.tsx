@@ -1,60 +1,60 @@
-'use client'
+'use client';
 
-import axios from 'axios'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { useCookies } from 'react-cookie'
-import toast from 'react-hot-toast'
-import { Title } from 'rizzui'
-import Table from './table'
+import axios from 'axios';
+import Table from './table';
+import { Title } from 'rizzui';
+import { useRouter } from 'next/navigation';
+import { useCookies } from 'react-cookie';
+import { DATA_PELANGGARAN } from '@/types/pelanggaran/type';
+import { useEffect, useState } from 'react';
 
 export default function PelanggaranView() {
-  const router = useRouter()
-  const [cookies] = useCookies(['accessToken'])
-  const [pelanggaran, setPelanggaran] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [deleteData, setDeleteData] = useState(false)
+  const router = useRouter();
+  const [cookies] = useCookies(['accessToken']);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [pelanggaranList, setPelanggaranList] = useState<DATA_PELANGGARAN[]>(
+    []
+  );
 
-  // Fetch data from API
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
+    const fetchPelanggaranData = async () => {
+      setIsLoading(true);
       try {
-        const accessToken = cookies.accessToken
+        const accessToken = cookies.accessToken;
         const headers = {
           Authorization: `Bearer ${accessToken}`,
-        }
+        };
         const res = await axios.get(`${process.env.API_URL}/api/pelanggaran`, {
           headers,
-        })
+        });
 
-        setPelanggaran(res?.data?.data)
-        setLoading(false)
+        setPelanggaranList(res?.data?.data);
+        setIsLoading(false);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       } finally {
-        setLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [cookies.accessToken])
+    fetchPelanggaranData();
+  }, [cookies.accessToken]);
 
   // Delete data
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="mx-auto flex justify-center ">
         <Title as="h6" className="-me-2 mt-4 font-medium text-gray-500">
           Loading...
         </Title>
       </div>
-    )
+    );
   }
 
   return (
     <>
-      <Table data={pelanggaran} />
+      <Table data={pelanggaranList} />
     </>
-  )
+  );
 }

@@ -1,21 +1,24 @@
-import SiswaSelect from '@/utils/siswaSelect'
-import TipePelanggaranSelect from '@/utils/tipePelanggaranSelect'
-import { Textarea } from 'rizzui'
+import SiswaSelect from '@/utils/siswaSelect';
+import TipePelanggaranSelect from '@/utils/tipePelanggaranSelect';
+import { Textarea } from 'rizzui';
+import { ValidationSchema } from './validationSchema';
+import { DATA_PELANGGARAN_FORM } from '@/types/pelanggaran/type';
+import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 
-interface Proptypes {
-  control: any
-  register: any
-  errors: any
+interface PropTypes {
+  register: UseFormRegister<DATA_PELANGGARAN_FORM>;
+  errors: FieldErrors<DATA_PELANGGARAN_FORM>;
+  control: Control<ValidationSchema>;
 }
 
-export default function FormLayout(props: Proptypes) {
-  const { register, errors, control } = props
+export default function FormLayout(props: PropTypes) {
+  const { register, errors, control } = props;
   return (
     <>
       <div className="grid gap-5 md:grid-cols-2">
         <TipePelanggaranSelect
           control={control}
-          error={errors.tipe_pelanggaranId?.message}
+          error={errors.tipePelanggaranId?.message}
         />
 
         <SiswaSelect control={control} error={errors.siswaId?.message} />
@@ -27,5 +30,5 @@ export default function FormLayout(props: Proptypes) {
         error={errors.keterangan?.message}
       />
     </>
-  )
+  );
 }

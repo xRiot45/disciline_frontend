@@ -1,9 +1,18 @@
-import Link from 'next/link'
-import PencilIcon from '@/components/icons/pencil'
-import { HeaderCell } from '@/components/ui/table'
-import { ActionIcon, Text, Tooltip } from 'rizzui'
+import Link from 'next/link';
+import PencilIcon from '@/components/icons/pencil';
+import { HeaderCell } from '@/components/ui/table';
+import { ActionIcon, Text, Tooltip } from 'rizzui';
 
 export const getColumns = () => [
+  {
+    title: <HeaderCell title="No" />,
+    width: 50,
+    dataIndex: 'index',
+    key: 'index',
+    render: (text: unknown, record: unknown, index: number) => (
+      <Text className="text-sm">{index + 1}</Text>
+    ),
+  },
   {
     title: <HeaderCell title="Pelanggaran Yang Dilakukan" />,
     dataIndex: 'tipe_pelanggaran',
@@ -93,4 +102,4 @@ export const getColumns = () => [
       </div>
     ),
   },
-]
+];

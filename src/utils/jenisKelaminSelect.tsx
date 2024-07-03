@@ -2,11 +2,16 @@
 
 import { Select } from 'rizzui';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
-import { ValidationSchema } from '@/views/admin/siswa/form/validationSchema';
+import { ValidationSchema as SiswaValidationSchema } from '@/views/admin/siswa/form/validationSchema';
+import { ValidationSchema as GuruValidationSchema } from '@/views/admin/guru/form/validationSchema';
 
 interface PropTypes {
-  control: Control<ValidationSchema>;
-  error: string | undefined | FieldErrors<ValidationSchema>;
+  control: Control<SiswaValidationSchema> | Control<GuruValidationSchema> | any;
+  error:
+    | string
+    | undefined
+    | FieldErrors<SiswaValidationSchema>
+    | FieldErrors<GuruValidationSchema>;
 }
 
 export default function JenisKelaminSelect(props: PropTypes) {

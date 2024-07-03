@@ -1,31 +1,11 @@
-import TableLayout from '@/layouts/table-layout'
-import BasicTableWidget from '@/components/controlled-table/basic-table-widget'
-import { PiPlusBold } from 'react-icons/pi'
-import { getColumns } from './columns'
+import TableLayout from '@/layouts/table-layout';
+import BasicTableWidget from '@/components/controlled-table/basic-table-widget';
+import { PiPlusBold } from 'react-icons/pi';
+import { getColumns } from './columns';
+import { DATA_PELANGGARAN } from '@/types/pelanggaran/type';
 
-type Data = {
-  id: string
-  tipe_pelanggaran: {
-    id: string
-    nama_tipe_pelanggaran: string
-  }
-  siswa: {
-    id: string
-    nama_lengkap: string
-    kelas: {
-      nama_kelas: string
-    }
-
-    nama_wali: string
-    no_telp_wali: string
-    alamat: string
-  }
-  keterangan: string
-}
-
-interface Proptypes {
-  data: Data[]
-  //   onDeleteData?: (id: string) => void
+interface PropTypes {
+  data: DATA_PELANGGARAN[];
 }
 
 const pageHeader = {
@@ -39,10 +19,10 @@ const pageHeader = {
       name: 'Pelanggaran Siswa',
     },
   ],
-}
+};
 
-export default function Table(props: Proptypes) {
-  const { data } = props
+export default function Table(props: PropTypes) {
+  const { data } = props;
   return (
     <>
       <TableLayout
@@ -65,5 +45,5 @@ export default function Table(props: Proptypes) {
         />
       </TableLayout>
     </>
-  )
+  );
 }

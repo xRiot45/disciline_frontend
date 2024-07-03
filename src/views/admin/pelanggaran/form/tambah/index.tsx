@@ -31,9 +31,11 @@ const pageHeader = {
 
 export default function TambahPelanggaranView() {
   const router = useRouter();
-  const [cookies] = useCookies(['accessToken']);
+  const [cookies] = useCookies<string>(['accessToken']);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleAddPelanggaran = async (
+    values: z.infer<typeof validationSchema>
+  ) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -68,7 +70,7 @@ export default function TambahPelanggaranView() {
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={handleAddPelanggaran}
       >
         {({ register, control, formState: { errors } }) => (
           <div className="space-y-3">

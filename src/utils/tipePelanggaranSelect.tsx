@@ -1,92 +1,94 @@
-'use client'
+'use client';
 
-import axios from 'axios'
-import { Select } from 'rizzui'
-import { Controller } from 'react-hook-form'
-import { useCookies } from 'react-cookie'
-import { useEffect, useState } from 'react'
+import axios from 'axios';
+import { Select } from 'rizzui';
+import { useCookies } from 'react-cookie';
+import { ValidationSchema } from '@/views/admin/pelanggaran/form/validationSchema';
+import { useEffect, useState } from 'react';
+import { DATA_TIPE_PELANGGARAN } from '@/types/master/tipe-pelanggaran/type';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 
-interface Proptypes {
-  control: any
-  error: any
+interface PropTypes {
+  control: Control<ValidationSchema>;
+  error: string | undefined | FieldErrors<ValidationSchema>;
 }
 
-type Item = {
-  id: string
-  nama_tipe_pelanggaran: string
-}
-
-export default function TipePelanggaranSelect(props: Proptypes) {
-  const { control, error } = props
-  const [cookies] = useCookies(['accessToken'])
-  const [tipePelanggaranData, setTipePelanggaranData] = useState([])
-  const [loading, setLoading] = useState(false)
+export default function TipePelanggaranSelect(props: PropTypes) {
+  const { control, error } = props;
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [tipePelanggaranData, setTipePelanggaranData] = useState<
+    DATA_TIPE_PELANGGARAN[]
+  >([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setLoading(true)
+    setIsLoading(true);
     const fetchData = async () => {
       try {
-        const accessToken = cookies.accessToken
+        const accessToken = cookies.accessToken;
         const headers = {
           Authorization: `Bearer ${accessToken}`,
-        }
+        };
 
         const res = await axios.get(
           `${process.env.API_URL}/api/master/tipe-pelanggaran`,
           {
             headers,
-          },
-        )
-        const transformedData = res?.data?.data.map((item: Item) => ({
-          id: item.id,
-          nama_tipe_pelanggaran: item.nama_tipe_pelanggaran,
-        }))
+          }
+        );
+        const transformedData = res?.data?.data.map(
+          (item: DATA_TIPE_PELANGGARAN) => ({
+            id: item.id,
+            nama_tipe_pelanggaran: item.nama_tipe_pelanggaran,
+          })
+        );
 
-        setTipePelanggaranData(transformedData)
+        setTipePelanggaranData(transformedData);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
-        setLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [cookies.accessToken])
+    fetchData();
+  }, [cookies.accessToken]);
 
-  const optionTipePelanggaran = tipePelanggaranData.map((item: any) => ({
-    value: item.id,
-    label: item.nama_tipe_pelanggaran,
-  }))
+  const optionTipePelanggaran = tipePelanggaranData.map(
+    (item: DATA_TIPE_PELANGGARAN) => ({
+      value: item.id,
+      label: item.nama_tipe_pelanggaran,
+    })
+  );
 
   const findSelectedOption = (value: string | null) => {
     return (
       optionTipePelanggaran.find((option) => option.value === value) || null
-    )
-  }
+    );
+  };
 
   return (
     <>
       <Controller
         name="tipePelanggaranId"
         control={control}
-        defaultValue={null}
         render={({ field: { onChange, value } }) => {
-          const selectedOption = findSelectedOption(value)
+          const selectedOption = findSelectedOption(value);
           return (
             <Select
               size="lg"
               label="Tipe Pelanggaran"
               value={selectedOption || null}
-              error={error}
+              error={typeof error === 'string' ? error : undefined}
               placeholder="Pilih Tipe Pelanggaran..."
               dropdownClassName="!z-0"
               options={optionTipePelanggaran}
               onChange={onChange}
               getOptionValue={(option) => option.value}
             />
-          )
+          );
         }}
       />
     </>
-  )
+  );
 }
