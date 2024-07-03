@@ -2,10 +2,12 @@ import TableLayout from '@/layouts/table-layout';
 import BasicTableWidget from '@/components/controlled-table/basic-table-widget';
 import { PiPlusBold } from 'react-icons/pi';
 import { getColumns } from './columns';
+import { FaFileExcel } from 'react-icons/fa';
 import { DATA_PELANGGARAN } from '@/types/pelanggaran/type';
 
 interface PropTypes {
   data: DATA_PELANGGARAN[];
+  handleExport?: () => void;
 }
 
 const pageHeader = {
@@ -22,7 +24,7 @@ const pageHeader = {
 };
 
 export default function Table(props: PropTypes) {
-  const { data } = props;
+  const { data, handleExport } = props;
   return (
     <>
       <TableLayout
@@ -31,7 +33,11 @@ export default function Table(props: PropTypes) {
         data={data}
         urlButton={'/admin/pelanggaran/tambah'}
         buttonText={'Tambah Pelanggaran'}
-        icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
+        iconText={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
+        buttonExport={'Export Data'}
+        iconExport={<FaFileExcel className="me-1.5 h-[17px] w-[17px]" />}
+        variantExport="bg-green-500 hover:bg-green-600"
+        handleExport={handleExport}
       >
         <BasicTableWidget
           title="Data Pelanggaran Siswa"
