@@ -3,6 +3,7 @@
 import axios from 'axios';
 import Table from './table';
 import toast from 'react-hot-toast';
+import { Data } from '@/types/master/agama/type';
 import { Title } from 'rizzui';
 import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
@@ -10,10 +11,10 @@ import { useEffect, useState } from 'react';
 
 export default function AgamaView() {
   const router = useRouter();
-  const [cookies] = useCookies(['accessToken']);
-  const [agama, setAgama] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [deleteData, setDeleteData] = useState(false);
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [agama, setAgama] = useState<Data[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [deleteData, setDeleteData] = useState<boolean>(false);
 
   // Fetch data from API
   useEffect(() => {
@@ -53,16 +54,17 @@ export default function AgamaView() {
         `${process.env.API_URL}/api/master/agama/${id}`,
         { headers }
       );
+
       if (res.status === 200) {
         toast.success('Agama berhasil dihapus!');
-        setAgama((prevData: any) =>
-          prevData.filter((item: any) => item.id !== id)
+        setAgama((prevData: Data[]) =>
+          prevData.filter((item: Data) => item.id !== id)
         );
 
         router.refresh();
         setDeleteData(true);
       }
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
       toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!');
     } finally {

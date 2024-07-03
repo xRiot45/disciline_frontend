@@ -13,7 +13,7 @@ import { useCookies } from 'react-cookie';
 import { validationSchema, ValidationSchema } from '../validationSchema';
 
 const pageHeader = {
-  title: 'Agama',
+  title: 'Tambah Agama',
   breadcrumb: [
     {
       href: '/admin/dashboard',

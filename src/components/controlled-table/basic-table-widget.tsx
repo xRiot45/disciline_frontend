@@ -45,13 +45,14 @@ type BasicTableWidgetProps = {
     y?: number;
   };
   sticky?: boolean;
+  onDelete?: (id: string) => void;
 };
 
 export default function BasicTableWidget({
   title,
   data = [],
   getColumns,
-  pageSize = 7,
+  pageSize = 10,
   setPageSize,
   enablePagination,
   variant = 'modern',
@@ -62,6 +63,7 @@ export default function BasicTableWidget({
   scroll = { x: 1300 },
   className,
   searchPlaceholder = 'Search...',
+  onDelete,
 }: BasicTableWidgetProps) {
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
@@ -70,7 +72,7 @@ export default function BasicTableWidget({
   });
 
   const onDeleteItem = (id: string) => {
-    handleDelete(id);
+    onDelete && onDelete(id);
   };
 
   const {

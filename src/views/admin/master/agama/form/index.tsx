@@ -1,12 +1,14 @@
-import { Input } from 'rizzui'
+import { Input } from 'rizzui';
+import { FormValues } from '@/types/master/agama/type';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
-interface Proptypes {
-  register: any
-  errors: any
+interface PropTypes {
+  register: UseFormRegister<FormValues>;
+  errors: FieldErrors<FormValues>;
 }
 
-export default function FormLayout(props: Proptypes) {
-  const { register, errors } = props
+export default function FormLayout(props: PropTypes) {
+  const { register, errors } = props;
   return (
     <>
       <Input
@@ -20,5 +22,5 @@ export default function FormLayout(props: Proptypes) {
         error={errors.nama_agama?.message}
       />
     </>
-  )
+  );
 }

@@ -8,13 +8,13 @@ import PageHeader from '@/shared/page-header';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import { Button } from 'rizzui';
+import { useCookies } from 'react-cookie';
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { validationSchema, ValidationSchema } from '../validationSchema';
-import { useCookies } from 'react-cookie';
 
 const pageHeader = {
-  title: 'Agama',
+  title: 'Edit Agama',
   breadcrumb: [
     {
       href: '/admin/dashboard',
@@ -34,8 +34,10 @@ export default function EditAgamaView() {
   const router = useRouter();
   const pathname = usePathname();
   const id = pathname.split('/').pop();
-  const [cookies] = useCookies(['accessToken']);
-  const [namaAgama, setNamaAgama] = useState<string | any>('');
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [namaAgama, setNamaAgama] = useState({
+    nama_agama: '' as string,
+  });
 
   useEffect(() => {
     const fetchDataById = async () => {
@@ -78,7 +80,7 @@ export default function EditAgamaView() {
       }
     } catch (error: any) {
       if (error.response.status === 409) {
-        toast.error('Agama sudah ada');
+        toast.error('Agama sudah ada!');
       } else {
         toast.error(
           'Terjadi kesalahan saat mengubah data, silahkan coba lagi!'
@@ -96,7 +98,7 @@ export default function EditAgamaView() {
         validationSchema={validationSchema}
         useFormProps={{
           values: {
-            nama_agama: namaAgama?.nama_agama,
+            nama_agama: namaAgama.nama_agama,
           },
           mode: 'onChange',
         }}
