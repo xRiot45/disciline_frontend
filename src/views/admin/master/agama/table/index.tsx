@@ -1,11 +1,11 @@
 import TableLayout from '@/layouts/table-layout';
 import BasicTableWidget from '@/components/controlled-table/basic-table-widget';
-import { Data } from '@/types/master/agama/type';
-import { PiPlusBold } from 'react-icons/pi';
 import { getColumns } from './columns';
+import { PiPlusBold } from 'react-icons/pi';
+import { DATA_AGAMA } from '@/types/master/agama/type';
 
 interface Proptypes {
-  data: Data[];
+  data: DATA_AGAMA[];
   onDeleteData: (id: string) => void;
 }
 

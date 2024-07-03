@@ -31,9 +31,9 @@ const pageHeader = {
 
 export default function TambahAgamaView() {
   const router = useRouter();
-  const [cookies] = useCookies(['accessToken']);
+  const [cookies] = useCookies<string>(['accessToken']);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleAddAgama = async (values: z.infer<typeof validationSchema>) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -67,7 +67,7 @@ export default function TambahAgamaView() {
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={handleAddAgama}
       >
         {({ register, formState: { errors } }) => (
           <div className="space-y-3">

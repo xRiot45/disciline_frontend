@@ -1,10 +1,10 @@
 import { Input } from 'rizzui';
-import { FormValues } from '@/types/master/agama/type';
+import { DATA_AGAMA_FORM } from '@/types/master/agama/type';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 interface PropTypes {
-  register: UseFormRegister<FormValues>;
-  errors: FieldErrors<FormValues>;
+  register: UseFormRegister<DATA_AGAMA_FORM>;
+  errors: FieldErrors<DATA_AGAMA_FORM>;
 }
 
 export default function FormLayout(props: PropTypes) {

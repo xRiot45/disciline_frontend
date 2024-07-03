@@ -3,23 +3,22 @@
 import axios from 'axios';
 import Table from './table';
 import toast from 'react-hot-toast';
-import { Data } from '@/types/master/agama/type';
 import { Title } from 'rizzui';
 import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
+import { DATA_AGAMA } from '@/types/master/agama/type';
 import { useEffect, useState } from 'react';
 
 export default function AgamaView() {
   const router = useRouter();
   const [cookies] = useCookies<string>(['accessToken']);
-  const [agama, setAgama] = useState<Data[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [deleteData, setDeleteData] = useState<boolean>(false);
+  const [agamaList, setAgamaList] = useState<DATA_AGAMA[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [idDeleteData, setIsDeleteData] = useState<boolean>(false);
 
-  // Fetch data from API
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+    const fetchAgamaData = async () => {
+      setIsLoading(true);
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -29,21 +28,20 @@ export default function AgamaView() {
           headers,
         });
 
-        setAgama(res?.data?.data);
-        setLoading(false);
+        setAgamaList(res?.data?.data);
+        setIsLoading(false);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching agama data: ', error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
-    fetchData();
+    fetchAgamaData();
   }, [cookies.accessToken]);
 
-  // Delete data
-  const handleDeleteData = async (id: string) => {
-    setLoading(true);
+  const handleDeleteAgama = async (id: string) => {
+    setIsLoading(true);
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -57,22 +55,22 @@ export default function AgamaView() {
 
       if (res.status === 200) {
         toast.success('Agama berhasil dihapus!');
-        setAgama((prevData: Data[]) =>
-          prevData.filter((item: Data) => item.id !== id)
+        setAgamaList((prevList: DATA_AGAMA[]) =>
+          prevList.filter((item: DATA_AGAMA) => item.id !== id)
         );
 
         router.refresh();
-        setDeleteData(true);
+        setIsDeleteData(true);
       }
     } catch (error) {
-      console.log(error);
+      console.log('Error deleting data: ', error);
       toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="mx-auto flex justify-center ">
         <Title as="h6" className="-me-2 mt-4 font-medium text-gray-500">
@@ -84,7 +82,7 @@ export default function AgamaView() {
 
   return (
     <>
-      <Table data={agama} onDeleteData={handleDeleteData} />
+      <Table data={agamaList} onDeleteData={handleDeleteAgama} />
     </>
   );
 }

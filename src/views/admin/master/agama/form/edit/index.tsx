@@ -35,12 +35,12 @@ export default function EditAgamaView() {
   const pathname = usePathname();
   const id = pathname.split('/').pop();
   const [cookies] = useCookies<string>(['accessToken']);
-  const [namaAgama, setNamaAgama] = useState({
+  const [dataAgama, setDataAgama] = useState({
     nama_agama: '' as string,
   });
 
   useEffect(() => {
-    const fetchDataById = async () => {
+    const fetchDataAgamaById = async () => {
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -51,16 +51,17 @@ export default function EditAgamaView() {
           `${process.env.API_URL}/api/master/agama/${id}`,
           { headers }
         );
-        setNamaAgama(res?.data?.data);
+
+        setDataAgama(res?.data?.data);
       } catch (error) {
-        console.log(error);
+        console.log('error: fetch data agama by id', error);
       }
     };
 
-    fetchDataById();
+    fetchDataAgamaById();
   }, [cookies.accessToken, id]);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleEditAgama = async (values: z.infer<typeof validationSchema>) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -93,12 +94,12 @@ export default function EditAgamaView() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
-        onSubmit={handleSubmit}
+        onSubmit={handleEditAgama}
         resetValues={false}
         validationSchema={validationSchema}
         useFormProps={{
           values: {
-            nama_agama: namaAgama.nama_agama,
+            nama_agama: dataAgama?.nama_agama,
           },
           mode: 'onChange',
         }}
