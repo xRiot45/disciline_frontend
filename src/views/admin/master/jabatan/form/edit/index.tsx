@@ -8,13 +8,13 @@ import PageHeader from '@/shared/page-header';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import { Button } from 'rizzui';
+import { useCookies } from 'react-cookie';
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { validationSchema, ValidationSchema } from '../validationSchema';
-import { useCookies } from 'react-cookie';
 
 const pageHeader = {
-  title: 'Jabatan',
+  title: 'Edit Jabatan',
   breadcrumb: [
     {
       href: '/admin/dashboard',
@@ -34,8 +34,10 @@ export default function EditJabatanView() {
   const router = useRouter();
   const pathname = usePathname();
   const id = pathname.split('/').pop();
-  const [cookies] = useCookies(['accessToken']);
-  const [namajabatan, setNamajabatan] = useState<string | any>('');
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [dataJabatan, setDataJabatan] = useState({
+    nama_jabatan: '' as string,
+  });
 
   useEffect(() => {
     const fetchDataById = async () => {
@@ -49,7 +51,8 @@ export default function EditJabatanView() {
           `${process.env.API_URL}/api/master/jabatan/${id}`,
           { headers }
         );
-        setNamajabatan(res?.data?.data);
+
+        setDataJabatan(res?.data?.data);
       } catch (error) {
         console.log(error);
       }
@@ -96,7 +99,7 @@ export default function EditJabatanView() {
         validationSchema={validationSchema}
         useFormProps={{
           values: {
-            nama_jabatan: namajabatan?.nama_jabatan,
+            nama_jabatan: dataJabatan?.nama_jabatan,
           },
           mode: 'onChange',
         }}

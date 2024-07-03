@@ -1,15 +1,25 @@
 import Link from 'next/link';
 import PencilIcon from '@/components/icons/pencil';
 import DeletePopover from '@/shared/delete-popover';
+import { Data } from '@/types/master/jabatan/type';
 import { HeaderCell } from '@/components/ui/table';
 import { ActionIcon, Text, Tooltip } from 'rizzui';
 
-type Columns = {
-  data: any[];
+interface Columns {
+  data: Data[];
   onDeleteItem: (id: string) => void;
-};
+}
 
 export const getColumns = ({ onDeleteItem }: Columns) => [
+  {
+    title: <HeaderCell title="No" />,
+    width: 50,
+    dataIndex: 'index',
+    key: 'index',
+    render: (text: unknown, record: unknown, index: number) => (
+      <Text className="text-sm">{index + 1}</Text>
+    ),
+  },
   {
     title: <HeaderCell title="Nama Jabatan" />,
     dataIndex: 'nama_jabatan',
