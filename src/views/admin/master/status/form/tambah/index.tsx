@@ -33,7 +33,7 @@ export default function TambahStatusView() {
   const router = useRouter();
   const [cookies] = useCookies<string>(['accessToken']);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleAddStatus = async (values: z.infer<typeof validationSchema>) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -67,7 +67,7 @@ export default function TambahStatusView() {
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={handleAddStatus}
       >
         {({ register, formState: { errors } }) => (
           <div className="space-y-3">

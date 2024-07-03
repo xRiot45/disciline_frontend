@@ -40,7 +40,7 @@ export default function EditStatusView() {
   });
 
   useEffect(() => {
-    const fetchDataById = async () => {
+    const fetchDataStatusById = async () => {
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -53,11 +53,11 @@ export default function EditStatusView() {
         );
         setDataStatus(res?.data?.data);
       } catch (error) {
-        console.log(error);
+        console.log('Error: fetch data status by id', error);
       }
     };
 
-    fetchDataById();
+    fetchDataStatusById();
   }, [cookies.accessToken, id]);
 
   const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
@@ -80,6 +80,7 @@ export default function EditStatusView() {
       }
     } catch (error: any) {
       if (error.response.status === 409) {
+        console.log('error: ', error);
         toast.error('Status sudah ada');
       } else {
         toast.error(

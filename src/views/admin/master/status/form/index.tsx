@@ -1,10 +1,10 @@
 import { Input } from 'rizzui';
-import { FormValues } from '@/types/master/status/type';
+import { DATA_STATUS_FORM } from '@/types/master/status/type';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 interface Proptypes {
-  register: UseFormRegister<FormValues>;
-  errors: FieldErrors<FormValues>;
+  register: UseFormRegister<DATA_STATUS_FORM>;
+  errors: FieldErrors<DATA_STATUS_FORM>;
 }
 
 export default function FormLayout(props: Proptypes) {

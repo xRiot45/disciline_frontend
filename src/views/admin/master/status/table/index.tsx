@@ -1,11 +1,11 @@
 import TableLayout from '@/layouts/table-layout';
 import BasicTableWidget from '@/components/controlled-table/basic-table-widget';
-import { Data } from '@/types/master/status/type';
 import { PiPlusBold } from 'react-icons/pi';
 import { getColumns } from './columns';
+import { DATA_STATUS } from '@/types/master/status/type';
 
 interface Proptypes {
-  data: Data[];
+  data: DATA_STATUS[];
   onDeleteData: (id: string) => void;
 }
 

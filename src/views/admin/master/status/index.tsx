@@ -3,23 +3,22 @@
 import axios from 'axios';
 import Table from './table';
 import toast from 'react-hot-toast';
-import { Data } from '@/types/master/status/type';
 import { Title } from 'rizzui';
 import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
+import { DATA_STATUS } from '@/types/master/status/type';
 import { useEffect, useState } from 'react';
 
 export default function StatusView() {
   const router = useRouter();
   const [cookies] = useCookies<string>(['accessToken']);
-  const [status, setStatus] = useState<Data[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [deleteData, setDeleteData] = useState<boolean>(false);
+  const [statusList, setStatusList] = useState<DATA_STATUS[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDeleteData, setIsDeleteData] = useState<boolean>(false);
 
-  // Fetch data from API
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+    const fetchStatusData = async () => {
+      setIsLoading(true);
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -32,21 +31,20 @@ export default function StatusView() {
           }
         );
 
-        setStatus(res?.data?.data);
-        setLoading(false);
+        setStatusList(res?.data?.data);
+        setIsLoading(false);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching status data: ', error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
-    fetchData();
+    fetchStatusData();
   }, [cookies.accessToken]);
 
-  // Delete data
-  const handleDeleteData = async (id: string) => {
-    setLoading(true);
+  const handleDeleteStatus = async (id: string) => {
+    setIsLoading(true);
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -59,22 +57,22 @@ export default function StatusView() {
       );
       if (res.status === 200) {
         toast.success('Status berhasil dihapus!');
-        setStatus((prevData: Data[]) =>
-          prevData.filter((item: Data) => item.id !== id)
+        setStatusList((prevList: DATA_STATUS[]) =>
+          prevList.filter((item: DATA_STATUS) => item.id !== id)
         );
 
         router.refresh();
-        setDeleteData(true);
+        setIsDeleteData(true);
       }
     } catch (error) {
-      console.log(error);
+      console.log('Error deleting data: ', error);
       toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="mx-auto flex justify-center ">
         <Title as="h6" className="-me-2 mt-4 font-medium text-gray-500">
@@ -86,7 +84,7 @@ export default function StatusView() {
 
   return (
     <>
-      <Table data={status} onDeleteData={handleDeleteData} />
+      <Table data={statusList} onDeleteData={handleDeleteStatus} />
     </>
   );
 }

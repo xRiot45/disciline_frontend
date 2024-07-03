@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import PencilIcon from '@/components/icons/pencil';
 import DeletePopover from '@/shared/delete-popover';
-import { Data } from '@/types/master/status/type';
 import { HeaderCell } from '@/components/ui/table';
+import { DATA_STATUS } from '@/types/master/status/type';
 import { ActionIcon, Text, Tooltip } from 'rizzui';
 
 interface Columns {
-  data: Data[];
+  data: DATA_STATUS[];
   onDeleteItem: (id: string) => void;
 }
 
