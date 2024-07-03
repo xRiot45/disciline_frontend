@@ -46,14 +46,15 @@ export default function TableLayout({
               {buttonText}
             </Button>
           </Link>
-          <Button
-            as="span"
-            className={`w-full cursor-pointer @md:mt-0 @lg:w-auto ${variantExport}`}
-            onClick={() => handleExport && handleExport()}
-          >
-            {iconExport}
-            {buttonExport}
-          </Button>
+          {buttonExport ? (
+            <Button
+              onClick={handleExport}
+              className={`w-full @md:mt-0 @lg:w-auto ${variantExport}`}
+            >
+              {iconExport}
+              {buttonExport}
+            </Button>
+          ) : null}
         </div>
       </PageHeader>
 
