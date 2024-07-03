@@ -21,7 +21,7 @@ const pageHeader = {
       name: 'Dashboard',
     },
     {
-      href: '/admin/agama',
+      href: '/admin/guru',
       name: 'Guru',
     },
     {
