@@ -1,90 +1,86 @@
-'use client'
+'use client';
 
-import axios from 'axios'
-import { Select } from 'rizzui'
-import { Controller } from 'react-hook-form'
-import { useCookies } from 'react-cookie'
-import { useEffect, useState } from 'react'
+import axios from 'axios';
+import { Select } from 'rizzui';
+import { useCookies } from 'react-cookie';
+import { DATA_STATUS } from '@/types/master/status/type';
+import { ValidationSchema } from '@/views/admin/guru/form/validationSchema';
+import { useEffect, useState } from 'react';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 
-interface Proptypes {
-  control: any
-  error: any
+interface PropTypes {
+  control: Control<ValidationSchema>;
+  error: string | undefined | FieldErrors<ValidationSchema>;
 }
 
-type Item = {
-  id: string
-  nama_status: string
-}
-
-export default function StatusSelect(props: Proptypes) {
-  const { control, error } = props
-  const [cookies] = useCookies(['accessToken'])
-  const [statusData, setStatusData] = useState([])
-  const [loading, setLoading] = useState(false)
+export default function StatusSelect(props: PropTypes) {
+  const { control, error } = props;
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [statusData, setStatusData] = useState<DATA_STATUS[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setLoading(true)
-    const fetchData = async () => {
+    setIsLoading(true);
+    const fetchStatusData = async () => {
       try {
-        const accessToken = cookies.accessToken
+        const accessToken = cookies.accessToken;
         const headers = {
           Authorization: `Bearer ${accessToken}`,
-        }
+        };
 
         const res = await axios.get(
           `${process.env.API_URL}/api/master/status`,
           {
             headers,
-          },
-        )
-        const transformedData = res?.data?.data.map((item: Item) => ({
+          }
+        );
+        const transformedData = res?.data?.data.map((item: DATA_STATUS) => ({
           id: item.id,
           nama_status: item.nama_status,
-        }))
+        }));
 
-        setStatusData(transformedData)
+        setStatusData(transformedData);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
-        setLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [cookies.accessToken])
+    fetchStatusData();
+  }, [cookies.accessToken]);
 
-  const optionStatus = statusData.map((item: any) => ({
+  const optionStatus = statusData.map((item: DATA_STATUS) => ({
     value: item.id,
     label: item.nama_status,
-  }))
+  }));
 
   const findSelectedOption = (value: string | null) => {
-    return optionStatus.find((option) => option.value === value) || null
-  }
+    return optionStatus.find((option) => option.value === value) || null;
+  };
 
   return (
     <>
       <Controller
         name="statusId"
         control={control}
-        defaultValue={null}
         render={({ field: { onChange, value } }) => {
-          const selectedOption = findSelectedOption(value)
+          const selectedOption = findSelectedOption(value);
           return (
             <Select
               size="lg"
               label="Status"
               value={selectedOption || null}
-              error={error}
+              error={typeof error === 'string' ? error : undefined}
               placeholder="Pilih Status..."
               dropdownClassName="!z-0"
               options={optionStatus}
               onChange={onChange}
               getOptionValue={(option) => option.value}
             />
-          )
+          );
         }}
       />
     </>
-  )
+  );
 }

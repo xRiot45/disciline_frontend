@@ -14,7 +14,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { validationSchema, ValidationSchema } from '../validationSchema';
 
 const pageHeader = {
-  title: 'Guru',
+  title: 'Edit Guru',
   breadcrumb: [
     {
       href: '/admin/dashboard',
@@ -34,11 +34,29 @@ export default function EditGuruView() {
   const router = useRouter();
   const pathname = usePathname();
   const id = pathname.split('/').pop();
-  const [cookies] = useCookies(['accessToken']);
-  const [dataGuru, setDataGuru] = useState<any>({});
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [dataGuru, setDataGuru] = useState({
+    nama_lengkap: '' as string,
+    nip: '' as string,
+    status: {
+      id: '' as string,
+    },
+    jabatan: {
+      id: '' as string,
+    },
+    golongan: {
+      id: '' as string,
+    },
+    agama: {
+      id: '' as string,
+    },
+    jenis_kelamin: '' as string,
+    no_telp: '' as string,
+    alamat: '' as string,
+  });
 
   useEffect(() => {
-    const fetchDataById = async () => {
+    const fetchDataGuruById = async () => {
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -55,10 +73,10 @@ export default function EditGuruView() {
       }
     };
 
-    fetchDataById();
+    fetchDataGuruById();
   }, [cookies.accessToken, id]);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleEditGuru = async (values: z.infer<typeof validationSchema>) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -91,8 +109,7 @@ export default function EditGuruView() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
-        onSubmit={handleSubmit}
-        resetValues={false}
+        onSubmit={handleEditGuru}
         validationSchema={validationSchema}
         useFormProps={{
           values: {

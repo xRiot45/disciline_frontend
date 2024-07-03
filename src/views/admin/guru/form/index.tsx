@@ -1,18 +1,23 @@
-import AgamaSelect from '@/utils/agamaSelect'
-import GolonganSelect from '@/utils/golonganSelect'
-import JabatanSelect from '@/utils/jabatanSelect'
-import JenisKelaminSelect from '@/utils/jenisKelaminSelect'
-import StatusSelect from '@/utils/statusSelect'
-import { Input, Textarea } from 'rizzui'
+import AgamaSelect from '@/utils/agamaSelect';
+import StatusSelect from '@/utils/statusSelect';
+import JabatanSelect from '@/utils/jabatanSelect';
+import GolonganSelect from '@/utils/golonganSelect';
+import JenisKelaminSelect from '@/utils/jenisKelaminSelect';
+import { DATA_GURU_FORM } from '@/types/guru/type';
+import { Input, Textarea } from 'rizzui';
+import { ValidationSchema } from './validationSchema';
+import { handleNumericChange } from '@/helpers/numericChange';
+import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 
-interface Proptypes {
-  control: any
-  register: any
-  errors: any
+interface PropTypes {
+  register: UseFormRegister<DATA_GURU_FORM>;
+  errors: FieldErrors<DATA_GURU_FORM>;
+  control: Control<ValidationSchema>;
 }
 
-export default function FormLayout(props: Proptypes) {
-  const { register, errors, control } = props
+export default function FormLayout(props: PropTypes) {
+  const { register, errors, control } = props;
+
   return (
     <>
       <div className="grid gap-5 md:grid-cols-2">
@@ -36,6 +41,7 @@ export default function FormLayout(props: Proptypes) {
           inputClassName="text-sm"
           {...register('nip')}
           error={errors.nip?.message}
+          onChange={handleNumericChange}
         />
 
         <StatusSelect control={control} error={errors.statusId?.message} />
@@ -56,6 +62,7 @@ export default function FormLayout(props: Proptypes) {
           inputClassName="text-sm"
           {...register('no_telp')}
           error={errors.no_telp?.message}
+          onChange={handleNumericChange}
         />
       </div>
       <Textarea
@@ -64,5 +71,5 @@ export default function FormLayout(props: Proptypes) {
         error={errors.alamat?.message}
       />
     </>
-  )
+  );
 }

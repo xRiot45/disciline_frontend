@@ -1,90 +1,88 @@
-'use client'
+'use client';
 
-import axios from 'axios'
-import { Select } from 'rizzui'
-import { Controller } from 'react-hook-form'
-import { useCookies } from 'react-cookie'
-import { useEffect, useState } from 'react'
+import axios from 'axios';
+import { Select } from 'rizzui';
+import { useCookies } from 'react-cookie';
+import { DATA_JABATAN } from '@/types/master/jabatan/type';
+import { ValidationSchema } from '@/views/admin/guru/form/validationSchema';
+import { useEffect, useState } from 'react';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 
-interface Proptypes {
-  control: any
-  error: any
+interface PropTypes {
+  control: Control<ValidationSchema>;
+  error: string | undefined | FieldErrors<ValidationSchema>;
 }
 
-type Item = {
-  id: string
-  nama_jabatan: string
-}
-
-export default function JabatanSelect(props: Proptypes) {
-  const { control, error } = props
-  const [cookies] = useCookies(['accessToken'])
-  const [jabatanData, setJabatanData] = useState([])
-  const [loading, setLoading] = useState(false)
+export default function JabatanSelect(props: PropTypes) {
+  const { control, error } = props;
+  const [cookies] = useCookies(['accessToken']);
+  const [jabatanData, setJabatanData] = useState<DATA_JABATAN[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setLoading(true)
-    const fetchData = async () => {
+    setIsLoading(true);
+    const fetchJabatanData = async () => {
       try {
-        const accessToken = cookies.accessToken
+        const accessToken = cookies.accessToken;
         const headers = {
           Authorization: `Bearer ${accessToken}`,
-        }
+        };
 
         const res = await axios.get(
           `${process.env.API_URL}/api/master/jabatan`,
           {
             headers,
-          },
-        )
-        const transformedData = res?.data?.data.map((item: Item) => ({
+          }
+        );
+        const transformedData = res?.data?.data.map((item: DATA_JABATAN) => ({
           id: item.id,
           nama_jabatan: item.nama_jabatan,
-        }))
+        }));
 
-        setJabatanData(transformedData)
+        setJabatanData(transformedData);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
-        setLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [cookies.accessToken])
+    fetchJabatanData();
+  }, [cookies.accessToken]);
 
-  const optionJabatan = jabatanData.map((item: any) => ({
+  const optionJabatan = jabatanData.map((item: DATA_JABATAN) => ({
     value: item.id,
     label: item.nama_jabatan,
-  }))
+  }));
 
   const findSelectedOption = (value: string | null) => {
-    return optionJabatan.find((option) => option.value === value) || null
-  }
+    return optionJabatan.find((option) => option.value === value) || null;
+  };
 
   return (
     <>
       <Controller
         name="jabatanId"
         control={control}
-        defaultValue={null}
         render={({ field: { onChange, value } }) => {
-          const selectedOption = findSelectedOption(value)
+          const selectedOption = findSelectedOption(value);
           return (
             <Select
               size="lg"
               label="Jabatan"
               value={selectedOption || null}
-              error={error}
+              error={
+                typeof error === 'string' ? error : error?.jabatanId?.message
+              }
               placeholder="Pilih Jabatan..."
               dropdownClassName="!z-0"
               options={optionJabatan}
               onChange={onChange}
               getOptionValue={(option) => option.value}
             />
-          )
+          );
         }}
       />
     </>
-  )
+  );
 }

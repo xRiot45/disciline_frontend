@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
 export const validationSchema = z.object({
   nama_lengkap: z.string().min(2, 'Form nama lengkap harus diisi!'),
@@ -10,6 +10,6 @@ export const validationSchema = z.object({
   jenis_kelamin: z.string().min(2, 'Form jenis kelamin harus dipilih!'),
   no_telp: z.string().min(2, 'Form no telp harus diisi!'),
   alamat: z.string().min(2, 'Form alamat harus diisi!'),
-})
+});
 
-export type ValidationSchema = z.infer<typeof validationSchema>
+export type ValidationSchema = z.infer<typeof validationSchema>;
