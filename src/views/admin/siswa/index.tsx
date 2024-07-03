@@ -14,7 +14,7 @@ export default function SiswaView() {
   const [cookies] = useCookies<string>(['accessToken']);
   const [siswaList, setSiswaList] = useState<DATA_SISWA[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [idDeleteData, setIsDeleteData] = useState<boolean>(false);
+  const [isDeleteData, setIsDeleteData] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchSiswaData = async () => {
