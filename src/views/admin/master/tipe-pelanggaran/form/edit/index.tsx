@@ -14,7 +14,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { validationSchema, ValidationSchema } from '../validationSchema';
 
 const pageHeader = {
-  title: 'Tipe Pelanggaran',
+  title: 'Edit Tipe Pelanggaran',
   breadcrumb: [
     {
       href: '/admin/dashboard',
@@ -34,13 +34,13 @@ export default function EditTipePelanggaranView() {
   const router = useRouter();
   const pathname = usePathname();
   const id = pathname.split('/').pop();
-  const [cookies] = useCookies(['accessToken']);
-  const [namaTipePelanggaran, setNamaTipePelanggaran] = useState<string | any>(
-    ''
-  );
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [dataTipePelanggaran, setDataTipePelanggaran] = useState({
+    nama_tipe_pelanggaran: '' as string,
+  });
 
   useEffect(() => {
-    const fetchDataById = async () => {
+    const fetchDataTipePelanggaranById = async () => {
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -51,16 +51,19 @@ export default function EditTipePelanggaranView() {
           `${process.env.API_URL}/api/master/tipe-pelanggaran/${id}`,
           { headers }
         );
-        setNamaTipePelanggaran(res?.data?.data);
+
+        setDataTipePelanggaran(res?.data?.data);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchDataById();
+    fetchDataTipePelanggaranById();
   }, [cookies.accessToken, id]);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleEditTipePelanggaran = async (
+    values: z.infer<typeof validationSchema>
+  ) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -80,8 +83,10 @@ export default function EditTipePelanggaranView() {
       }
     } catch (error: any) {
       if (error.response.status === 409) {
+        console.log(error);
         toast.error('Tipe pelanggaran sudah ada');
       } else {
+        console.log(error);
         toast.error(
           'Terjadi kesalahan saat mengubah data, silahkan coba lagi!'
         );
@@ -93,12 +98,11 @@ export default function EditTipePelanggaranView() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
-        onSubmit={handleSubmit}
-        resetValues={false}
+        onSubmit={handleEditTipePelanggaran}
         validationSchema={validationSchema}
         useFormProps={{
           values: {
-            nama_tipe_pelanggaran: namaTipePelanggaran?.nama_tipe_pelanggaran,
+            nama_tipe_pelanggaran: dataTipePelanggaran?.nama_tipe_pelanggaran,
           },
           mode: 'onChange',
         }}

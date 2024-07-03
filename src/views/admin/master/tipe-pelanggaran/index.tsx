@@ -1,91 +1,92 @@
-'use client'
+'use client';
 
-import axios from 'axios'
-import toast from 'react-hot-toast'
-import Table from './table'
-import { Title } from 'rizzui'
-import { useRouter } from 'next/navigation'
-import { useCookies } from 'react-cookie'
-import { useEffect, useState } from 'react'
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import Table from './table';
+import { Title } from 'rizzui';
+import { useRouter } from 'next/navigation';
+import { useCookies } from 'react-cookie';
+import { useEffect, useState } from 'react';
+import { DATA_TIPE_PELANGGARAN } from '@/types/master/tipe-pelanggaran/type';
 
 export default function TipePelanggaranView() {
-  const router = useRouter()
-  const [cookies] = useCookies(['accessToken'])
-  const [tipePelanggaran, setTipePelanggaran] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [deleteData, setDeleteData] = useState(false)
+  const router = useRouter();
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [tipePelanggaranList, setTipePelanggaranList] = useState<
+    DATA_TIPE_PELANGGARAN[]
+  >([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDeleteData, setIsDeleteData] = useState<boolean>(false);
 
-  // Fetch data from API
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
+    const fetchTipePelanggaranData = async () => {
+      setIsLoading(true);
       try {
-        const accessToken = cookies.accessToken
+        const accessToken = cookies.accessToken;
         const headers = {
           Authorization: `Bearer ${accessToken}`,
-        }
+        };
         const res = await axios.get(
           `${process.env.API_URL}/api/master/tipe-pelanggaran`,
           {
             headers,
-          },
-        )
+          }
+        );
 
-        setTipePelanggaran(res?.data?.data)
-        setLoading(false)
+        setTipePelanggaranList(res?.data?.data);
+        setIsLoading(false);
       } catch (error) {
-        console.error(error)
+        console.log(error);
       } finally {
-        setLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [cookies.accessToken])
+    fetchTipePelanggaranData();
+  }, [cookies.accessToken]);
 
-  // Delete data
   const handleDeleteData = async (id: string) => {
-    setLoading(true)
+    setIsLoading(true);
     try {
-      const accessToken = cookies.accessToken
+      const accessToken = cookies.accessToken;
       const headers = {
         Authorization: `Bearer ${accessToken}`,
-      }
+      };
 
       const res = await axios.delete(
         `${process.env.API_URL}/api/master/tipe-pelanggaran/${id}`,
-        { headers },
-      )
+        { headers }
+      );
       if (res.status === 200) {
-        toast.success('Tipe pelanggaran berhasil dihapus!')
-        setTipePelanggaran((prevData: any) =>
-          prevData.filter((item: any) => item.id !== id),
-        )
+        toast.success('Tipe pelanggaran berhasil dihapus!');
+        setTipePelanggaranList((prevList: DATA_TIPE_PELANGGARAN[]) =>
+          prevList.filter((item: DATA_TIPE_PELANGGARAN) => item.id !== id)
+        );
 
-        router.refresh()
-        setDeleteData(true)
+        router.refresh();
+        setIsDeleteData(true);
       }
     } catch (error: any) {
-      console.log(error)
-      toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!')
+      console.log(error);
+      toast.error('Terjadi kesalahan saat menghapus data, silahkan coba lagi!');
     } finally {
-      setLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="mx-auto flex justify-center ">
         <Title as="h6" className="-me-2 mt-4 font-medium text-gray-500">
           Loading...
         </Title>
       </div>
-    )
+    );
   }
 
   return (
     <>
-      <Table data={tipePelanggaran} onDeleteData={handleDeleteData} />
+      <Table data={tipePelanggaranList} onDeleteData={handleDeleteData} />
     </>
-  )
+  );
 }
