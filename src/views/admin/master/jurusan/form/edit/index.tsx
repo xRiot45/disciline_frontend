@@ -8,13 +8,13 @@ import PageHeader from '@/shared/page-header';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import { Button } from 'rizzui';
+import { useCookies } from 'react-cookie';
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { validationSchema, ValidationSchema } from '../validationSchema';
-import { useCookies } from 'react-cookie';
 
 const pageHeader = {
-  title: 'Jurusan',
+  title: 'Edit Jurusan',
   breadcrumb: [
     {
       href: '/admin/dashboard',
@@ -34,11 +34,13 @@ export default function EditJurusanView() {
   const router = useRouter();
   const pathname = usePathname();
   const id = pathname.split('/').pop();
-  const [cookies] = useCookies(['accessToken']);
-  const [namajurusan, setNamajurusan] = useState<string | any>('');
+  const [cookies] = useCookies<string>(['accessToken']);
+  const [dataJurusan, setDataJurusan] = useState({
+    nama_jurusan: '' as string,
+  });
 
   useEffect(() => {
-    const fetchDataById = async () => {
+    const fetchDataJurusanById = async () => {
       try {
         const accessToken = cookies.accessToken;
         const headers = {
@@ -49,16 +51,19 @@ export default function EditJurusanView() {
           `${process.env.API_URL}/api/master/jurusan/${id}`,
           { headers }
         );
-        setNamajurusan(res?.data?.data);
+
+        setDataJurusan(res?.data?.data);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchDataById();
+    fetchDataJurusanById();
   }, [cookies.accessToken, id]);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleEditJurusan = async (
+    values: z.infer<typeof validationSchema>
+  ) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -78,8 +83,10 @@ export default function EditJurusanView() {
       }
     } catch (error: any) {
       if (error.response.status === 409) {
+        console.log(error);
         toast.error('Jurusan sudah ada');
       } else {
+        console.log(error);
         toast.error(
           'Terjadi kesalahan saat mengubah data, silahkan coba lagi!'
         );
@@ -91,12 +98,11 @@ export default function EditJurusanView() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <Form<ValidationSchema>
-        onSubmit={handleSubmit}
-        resetValues={false}
+        onSubmit={handleEditJurusan}
         validationSchema={validationSchema}
         useFormProps={{
           values: {
-            nama_jurusan: namajurusan?.nama_jurusan,
+            nama_jurusan: dataJurusan?.nama_jurusan,
           },
           mode: 'onChange',
         }}

@@ -2,14 +2,24 @@ import Link from 'next/link';
 import PencilIcon from '@/components/icons/pencil';
 import DeletePopover from '@/shared/delete-popover';
 import { HeaderCell } from '@/components/ui/table';
+import { DATA_JURUSAN } from '@/types/master/jurusan/type';
 import { ActionIcon, Text, Tooltip } from 'rizzui';
 
-type Columns = {
-  data: any[];
+interface Columns {
+  data: DATA_JURUSAN[];
   onDeleteItem: (id: string) => void;
-};
+}
 
 export const getColumns = ({ onDeleteItem }: Columns) => [
+  {
+    title: <HeaderCell title="No" />,
+    width: 50,
+    dataIndex: 'index',
+    key: 'index',
+    render: (text: unknown, record: unknown, index: number) => (
+      <Text className="text-sm">{index + 1}</Text>
+    ),
+  },
   {
     title: <HeaderCell title="Nama Jurusan" />,
     dataIndex: 'nama_jurusan',

@@ -1,16 +1,12 @@
-import TableLayout from '@/layouts/table-layout'
-import BasicTableWidget from '@/components/controlled-table/basic-table-widget'
-import { PiPlusBold } from 'react-icons/pi'
-import { getColumns } from './columns'
+import TableLayout from '@/layouts/table-layout';
+import BasicTableWidget from '@/components/controlled-table/basic-table-widget';
+import { PiPlusBold } from 'react-icons/pi';
+import { getColumns } from './columns';
+import { DATA_JURUSAN } from '@/types/master/jurusan/type';
 
-type Data = {
-  id: string
-  nama_jurusan: string
-}
-
-interface Proptypes {
-  data: Data[]
-  onDeleteData: (id: string) => void
+interface PropTypes {
+  data: DATA_JURUSAN[];
+  onDeleteData: (id: string) => void;
 }
 
 const pageHeader = {
@@ -24,10 +20,10 @@ const pageHeader = {
       name: 'Jurusan',
     },
   ],
-}
+};
 
-export default function Table(props: Proptypes) {
-  const { data, onDeleteData } = props
+export default function Table(props: PropTypes) {
+  const { data, onDeleteData } = props;
   return (
     <>
       <TableLayout
@@ -51,5 +47,5 @@ export default function Table(props: Proptypes) {
         />
       </TableLayout>
     </>
-  )
+  );
 }
