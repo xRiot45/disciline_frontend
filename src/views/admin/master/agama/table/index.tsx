@@ -32,7 +32,7 @@ export default function Table(props: Proptypes) {
         data={data}
         urlButton={'/admin/master/agama/tambah'}
         buttonText={'Tambah Agama'}
-        icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
+        iconText={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
       >
         <BasicTableWidget
           title="Data Agama"

@@ -52,6 +52,7 @@
     "dayjs": "^1.11.11",
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.3",
+    "file-saver": "^2.0.5",
     "framer-motion": "^11.1.9",
     "fs-extra": "^11.2.0",
     "glob": "^10.3.14",
@@ -102,6 +103,7 @@
     "tailwind-merge": "^2.3.0",
     "typescript": "5.4.5",
     "uploadthing": "^6.10.3",
+    "xlsx": "^0.18.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -110,6 +112,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/date-arithmetic": "^4.1.4",
+    "@types/file-saver": "^2.0.7",
     "@types/google.maps": "^3.55.8",
     "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.1",

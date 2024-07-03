@@ -7,11 +7,15 @@ import PageHeader, { PageHeaderTypes } from '@/shared/page-header';
 type TableLayoutProps = {
   urlButton: string;
   buttonText?: string;
+  iconText?: React.ReactNode;
+  buttonExport?: string;
+  variantExport?: string;
+  iconExport?: React.ReactNode;
+  handleExport?: () => void;
   data: unknown[];
   header?: string;
   fileName?: string;
   variant?: string;
-  icon?: React.ReactNode;
 } & PageHeaderTypes;
 
 export default function TableLayout({
@@ -19,25 +23,37 @@ export default function TableLayout({
   buttonText,
   data,
   header,
-  icon,
+  iconText,
+  iconExport,
   fileName,
   children,
   variant,
+  buttonExport,
+  variantExport,
+  handleExport,
   ...props
 }: React.PropsWithChildren<TableLayoutProps>) {
   return (
     <>
       <PageHeader {...props}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          <Link href={urlButton} className=" w-full  @lg:w-auto">
+          <Link href={urlButton} className="w-full @lg:w-auto">
             <Button
               as="span"
               className={`w-full @md:mt-0 @lg:w-auto ${variant}`}
             >
-              {icon}
+              {iconText}
               {buttonText}
             </Button>
           </Link>
+          <Button
+            as="span"
+            className={`w-full cursor-pointer @md:mt-0 @lg:w-auto ${variantExport}`}
+            onClick={() => handleExport && handleExport()}
+          >
+            {iconExport}
+            {buttonExport}
+          </Button>
         </div>
       </PageHeader>
 
