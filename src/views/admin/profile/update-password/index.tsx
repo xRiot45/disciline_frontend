@@ -5,8 +5,8 @@ import axios from 'axios';
 import FormLayout from './form';
 import PageHeader from '@/shared/page-header';
 import { z } from 'zod';
-import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/navigation';
+import { useCookies } from 'react-cookie';
 import { validationSchema } from './form/validationSchema';
 
 const pageHeader = {
@@ -25,9 +25,11 @@ const pageHeader = {
 
 export default function UpdatePasswordView() {
   const router = useRouter();
-  const [cookies] = useCookies(['accessToken']);
+  const [cookies] = useCookies<string>(['accessToken']);
 
-  const handleSubmit = async (values: z.infer<typeof validationSchema>) => {
+  const handleUpdatePassword = async (
+    values: z.infer<typeof validationSchema>
+  ) => {
     try {
       const accessToken = cookies.accessToken;
       const headers = {
@@ -55,7 +57,7 @@ export default function UpdatePasswordView() {
   return (
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
-      <FormLayout submit={handleSubmit} />
+      <FormLayout submit={handleUpdatePassword} />
     </>
   );
 }
