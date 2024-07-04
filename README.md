@@ -1,51 +1,83 @@
-# Isomorphic
+<p align="center">
+  <a href="#" target="blank"><img src="./public/images/logo_light.png" width="90" alt="NoteMatic Logo" /></a>
+</p>
 
-## Getting Started
+<p align="center">Disciline Frontend</p>
+<p align="center">
 
-System Requirements:
+## Description
 
-1. [Node.js 18.17^](https://nodejs.org/en) or later.
-2. [pnpm - package manager](https://pnpm.io/installation#using-npm) (recommended)
+Disciline adalah aplikasi Sistem Informasi Pelanggaran Siswa (SIPS) yang bertujuan untuk mencatat, mengelola, dan melaporkan pelanggaran yang dilakukan siswa di lingkungan sekolah.
 
-First, install dependencies:
+- **Version :** v1.0.0
+- **Developer :** Rumah Kodingku
+- **Released On :** July 04, 2024
+- **Status :** Stable Release
+- **Contact :** [rumahkodingku45@gmail.com](mailto:rumahkodingku45@gmail.com)
+
+## Contents
+
+1. [Description](#description)
+2. [System Requirements](#system-requirements)
+3. [Tech Stack](#tech-stack)
+4. [Installation](#installation)
+5. [Setup Environment Variable](#setup-environtment-variable)
+6. [Features](#features)
+7. [Running the App](#running-the-app)
+
+## System Requirements
+
+- Linux, Windows or MacOS
+- Node.js v14 or later
+- MySQL 5.7 or later
+- npm (Node Package Manager)
+
+## Tech Stack
+
+- Next JS
+- TypeScript
+- Tailwind CSS
+- RizzUI
+
+## Installation
 
 ```bash
-npm i
-# or
-pnpm install
-# or
-yarn install
+# Navigate to project repository
+$ cd disciline_frontend
+
+# Install all dependencies
+$ npm install or pnpm install
 ```
 
-Now, run the development server, but first please configure (env variables)[https://isomorphic-doc.vercel.app/getting-started/installation#setting-environment-variables]:
+## Setup Environment Variable
 
 ```bash
-npm run dev
-# or
-pnpm dev
-# or
-yarn dev
+# Change name file
+$ cp .env.example .env
+
+# Environment
+API_URL= # Your API URL
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/(hydrogen)/page.tsx`. The page auto-updates as you edit the file to learn more about this template please visit our **[Official Documentation](https://isomorphic-doc.vercel.app/)**.
+- Authentication & Authorization
+- Update Password
+- CRUD (Create, Read, Update, Delete) Agama
+- CRUD (Create, Read, Update, Delete) Tipe Pelanggaran
+- CRUD (Create, Read, Update, Delete) Status
+- CRUD (Create, Read, Update, Delete) Jabatan
+- CRUD (Create, Read, Update, Delete) Golongan
+- CRUD (Create, Read, Update, Delete) Pendidikan
+- CRUD (Create, Read, Update, Delete) Jurusan
+- CRUD (Create, Read, Update, Delete) Guru
+- CRUD (Create, Read, Update, Delete) Kelas
+- CRUD (Create, Read, Update, Delete) Siswa
+- CRU (Create, Read, Update) Pelanggaran
 
-checkout our `package.json` scripts for more command.
+## Running The App
 
-## Learn More.
-
-To learn more about Isomorphic & Next.js, take a look at the following resources:
-
-- [Isomorphic Documentation](https://isomorphic-doc.vercel.app/) - learn about Isomorphic.
-- [RizzUI](https://www.rizzui.com/) - a react ui library by [REDQ](https://redq.io/).
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-https://www.youtube.com/watch?v=MAtaT8BZEAo
+```bash
+# development mode
+$ npm run dev or pnpm run dev
+```
