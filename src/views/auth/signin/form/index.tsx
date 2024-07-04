@@ -14,10 +14,10 @@ import { Input, Button, Password } from 'rizzui';
 export default function FormLayout() {
   const router = useRouter();
   const isMedium = useMedia('(max-width: 1200px)', false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSignIn = async (values: z.infer<typeof validationSchema>) => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const res = await axios.post(
         `${process.env.API_URL}/api/users/signin`,
@@ -33,8 +33,9 @@ export default function FormLayout() {
         router.push('/admin/dashboard');
       }
     } catch (error) {
+      console.log(error);
       toast.error('Username atau password salah!');
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -67,7 +68,7 @@ export default function FormLayout() {
               error={errors.password?.message}
             />
 
-            {loading ? (
+            {isLoading ? (
               <Button
                 type="submit"
                 size={isMedium ? 'lg' : 'xl'}
