@@ -41,6 +41,9 @@ export default function FormLayout(props: PropTypes) {
                 </HorizontalFormBlockWrapper>
 
                 <div className="mt-6 flex w-auto items-center justify-end gap-3">
+                  <Button type="submit" variant="solid">
+                    Update Password
+                  </Button>
                   <Link href="/admin/dashboard">
                     <Button
                       type="button"
@@ -50,9 +53,6 @@ export default function FormLayout(props: PropTypes) {
                       Batalkan
                     </Button>
                   </Link>
-                  <Button type="submit" variant="solid">
-                    Update Password
-                  </Button>
                 </div>
               </div>
             </>
