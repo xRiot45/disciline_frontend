@@ -24,6 +24,7 @@ Disciline adalah aplikasi Sistem Informasi Pelanggaran Siswa (SIPS) yang bertuju
 5. [Setup Environment Variable](#setup-environtment-variable)
 6. [Features](#features)
 7. [Running the App](#running-the-app)
+8. [Screenshots](#screenshots)
 
 ## System Requirements
 
@@ -81,3 +82,65 @@ API_URL= # Your API URL
 # development mode
 $ npm run dev or pnpm run dev
 ```
+
+## Screenshot
+
+### Homepage
+
+<img src="./public/images/screenshots/1.Beranda.png" alt="" />
+
+### Login Admin
+
+<img src="./public/images/screenshots/2.login_admin.png" alt="" />
+
+### Dashboard Admin
+
+<img src="./public/images/screenshots/3.dashboard_admin1.png" alt="" />
+
+### Master Data | Agama
+
+<img src="./public/images/screenshots/4.agama.png" alt="" />
+
+### Master Data | Status
+
+<img src="./public/images/screenshots/5.status.png" alt="" />
+
+### Master Data | Jabatan
+
+<img src="./public/images/screenshots/6.jabatan.png" alt="" />
+
+### Master Data | Golongan
+
+<img src="./public/images/screenshots/7.golongan.png" alt="" />
+
+### Master Data | Pendidikan
+
+<img src="./public/images/screenshots/8.pendidikan.png" alt="" />
+
+### Master Data | Jurusan
+
+<img src="./public/images/screenshots/9.jurusan.png" alt="" />
+
+### Master Data | Tipe Pelanggaran
+
+<img src="./public/images/screenshots/10.tipe_pelanggaran.png" alt="" />
+
+### Guru
+
+<img src="./public/images/screenshots/11.guru.png" alt="" />
+
+### Kelas
+
+<img src="./public/images/screenshots/12.kelas.png" alt="" />
+
+### Siswa
+
+<img src="./public/images/screenshots/13.siswa.png" alt="" />
+
+### Pelanggaran
+
+<img src="./public/images/screenshots/14.pelanggaran.png" alt="" />
+
+### Update Password
+
+<img src="./public/images/screenshots/15.update_password.png" alt="" />
