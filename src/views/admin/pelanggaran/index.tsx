@@ -3,6 +3,7 @@
 import * as XLSX from 'xlsx';
 import axios from 'axios';
 import Table from './table';
+import FormatTanggal from '@/helpers/formatTanggal';
 import { Title } from 'rizzui';
 import { saveAs } from 'file-saver';
 import { useCookies } from 'react-cookie';
@@ -76,7 +77,10 @@ export default function PelanggaranView() {
     XLSX.utils.book_append_sheet(wb, ws, 'Data Pelanggaran');
     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
     const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
-    saveAs(blob, `Data Pelanggaran Siswa ${new Date().toISOString()}.xlsx`);
+    saveAs(
+      blob,
+      `Data Pelanggaran Siswa ${FormatTanggal(new Date().toISOString())}.xlsx`
+    );
   };
 
   if (isLoading) {
